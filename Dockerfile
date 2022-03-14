@@ -14,4 +14,5 @@ WORKDIR /usr/bin
 ENTRYPOINT ["./relay"]
 CMD ["--help"]
 
-EXPOSE 10002  # server
+# server port
+EXPOSE 10002
