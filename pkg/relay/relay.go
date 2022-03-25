@@ -9,11 +9,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/RafaySystems/rcloud-base/pkg/sentry/cryptoutil"
-	"github.com/RafaySystems/rcloud-base/pkg/sentry/register"
-	"github.com/RafaySystems/relay/pkg/relaylogger"
-	"github.com/RafaySystems/relay/pkg/tunnel"
-	"github.com/RafaySystems/relay/pkg/utils"
+	"github.com/RafayLabs/rcloud-base/pkg/sentry/cryptoutil"
+	"github.com/RafayLabs/rcloud-base/pkg/sentry/register"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/tunnel"
+	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/spf13/viper"
 )
 

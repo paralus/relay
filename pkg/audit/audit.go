@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/RafaySystems/relay/pkg/sessions"
+	"github.com/RafayLabs/relay/pkg/sessions"
 	"github.com/felixge/httpsnoop"
 	"github.com/rs/xid"
 	"go.uber.org/zap"

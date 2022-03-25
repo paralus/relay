@@ -5,11 +5,11 @@ DEV_TAG := registry.dev.rafay-edge.net:5000/${DEV_USER}/relay:$(TS)
 
 .PHONY: tidy
 tidy:
-	GOPRIVATE=github.com/RafaySystems/* go mod tidy
+	GOPRIVATE=github.com/RafayLabs/* go mod tidy
 
 .PHONY: vendor
 vendor:
-	GOPROXY=direct GOPRIVATE=github.com/RafaySystems/* go mod vendor
+	GOPROXY=direct GOPRIVATE=github.com/RafayLabs/* go mod vendor
 
 check:
 	go fmt ./...

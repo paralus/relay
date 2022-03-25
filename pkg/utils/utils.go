@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RafaySystems/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
 	"github.com/dgraph-io/ristretto"
 	"github.com/felixge/tcpkeepalive"
 	"github.com/google/uuid"

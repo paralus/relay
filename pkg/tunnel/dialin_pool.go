@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/RafaySystems/relay/pkg/relaylogger"
-	"github.com/RafaySystems/relay/pkg/utils"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/utils"
 	"golang.org/x/net/http2"
 )
 

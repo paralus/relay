@@ -4,7 +4,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/RafaySystems/relay/pkg/utils"
+	"github.com/RafayLabs/relay/pkg/utils"
 )
 
 // Func is responsible for forwarding a remote connection to local server

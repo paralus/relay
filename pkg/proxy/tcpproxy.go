@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RafaySystems/relay/pkg/relaylogger"
-	"github.com/RafaySystems/relay/pkg/utils"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/utils"
 	k8proxy "k8s.io/apimachinery/pkg/util/proxy"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )

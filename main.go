@@ -17,11 +17,11 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"github.com/RafaySystems/relay/pkg/agent"
-	"github.com/RafaySystems/relay/pkg/relay"
-	"github.com/RafaySystems/relay/pkg/relaylogger"
-	"github.com/RafaySystems/relay/pkg/tail"
-	"github.com/RafaySystems/relay/pkg/utils"
+	"github.com/RafayLabs/relay/pkg/agent"
+	"github.com/RafayLabs/relay/pkg/relay"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/tail"
+	"github.com/RafayLabs/relay/pkg/utils"
 )
 
 var (

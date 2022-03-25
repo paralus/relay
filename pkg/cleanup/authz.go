@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	clientutil "github.com/RafaySystems/rcloud-base/pkg/controller/client"
-	"github.com/RafaySystems/rcloud-base/pkg/log"
+	clientutil "github.com/RafayLabs/rcloud-base/pkg/controller/client"
+	"github.com/RafayLabs/rcloud-base/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	corev1 "k8s.io/api/core/v1"

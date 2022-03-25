@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/RafaySystems/rcloud-base/pkg/log"
+	"github.com/RafayLabs/rcloud-base/pkg/log"
 	"go.uber.org/zap"
 )
 

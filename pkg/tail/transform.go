@@ -14,7 +14,7 @@ import (
 	"github.com/jinzhu/inflection"
 	"github.com/twmb/murmur3"
 
-	sentryrpc "github.com/RafaySystems/rcloud-base/proto/rpc/sentry"
+	sentryrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
 	"github.com/julienschmidt/httprouter"
 )
 
