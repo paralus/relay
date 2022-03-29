@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/RafaySystems/rcloud-base/pkg/sentry/cryptoutil"
-	"github.com/RafaySystems/rcloud-base/pkg/sentry/register"
-	sentryrpc "github.com/RafaySystems/rcloud-base/proto/rpc/sentry"
-	"github.com/RafaySystems/relay/pkg/utils"
+	"github.com/RafayLabs/rcloud-base/pkg/sentry/cryptoutil"
+	"github.com/RafayLabs/rcloud-base/pkg/sentry/register"
+	sentryrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
+	"github.com/RafayLabs/relay/pkg/utils"
 )
 
 // prepare config for outside relay boot strapping

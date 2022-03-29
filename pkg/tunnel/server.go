@@ -17,13 +17,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RafaySystems/relay/pkg/proxy"
-	"github.com/RafaySystems/relay/pkg/relaylogger"
-	"github.com/RafaySystems/relay/pkg/sessions"
+	"github.com/RafayLabs/relay/pkg/proxy"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/sessions"
 
-	peerclient "github.com/RafaySystems/rcloud-base/pkg/sentry/peering"
-	"github.com/RafaySystems/relay/pkg/audit"
-	"github.com/RafaySystems/relay/pkg/utils"
+	peerclient "github.com/RafayLabs/rcloud-base/pkg/sentry/peering"
+	"github.com/RafayLabs/relay/pkg/audit"
+	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/inconshreveable/go-vhost"
 	"golang.org/x/net/http2"
 )

@@ -12,9 +12,9 @@ import (
 
 	"github.com/twmb/murmur3"
 
-	clientutil "github.com/RafaySystems/rcloud-base/pkg/controller/client"
-	"github.com/RafaySystems/relay/pkg/relaylogger"
-	"github.com/RafaySystems/relay/pkg/utils"
+	clientutil "github.com/RafayLabs/rcloud-base/pkg/controller/client"
+	"github.com/RafayLabs/relay/pkg/relaylogger"
+	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/dgraph-io/ristretto"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 
