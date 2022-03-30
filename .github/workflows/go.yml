@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  GOPRIVATE: https://github.com/RafaySystems
+  GOPRIVATE: https://github.com/RafayLabs
 
 jobs:
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Granting private modules access
         run: |
-          git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/RafaySystems".insteadOf "https://github.com/RafaySystems"
+          git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/RafayLabs".insteadOf "https://github.com/RafayLabs"
 
       - name: Test all
         run: go test -v ./...
@@ -51,7 +51,7 @@ jobs:
 
   #     - name: Granting private modules access
   #       run: |
-  #         git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/RafaySystems".insteadOf "https://github.com/RafaySystems"
+  #         git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/RafayLabs".insteadOf "https://github.com/RafayLabs"
 
   #     - name: golangci-lint
   #       uses: golangci/golangci-lint-action@v2
