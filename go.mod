@@ -3,7 +3,7 @@ module github.com/RafayLabs/relay
 go 1.17
 
 require (
-	github.com/RafayLabs/rcloud-base v0.0.0-20220324105308-8aa0982e3067
+	github.com/RafayLabs/rcloud-base v0.0.0-20220425123133-b90e4724d36b
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/felixge/httpsnoop v1.0.1
@@ -31,6 +31,7 @@ require (
 )
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect

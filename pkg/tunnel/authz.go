@@ -13,6 +13,7 @@ import (
 	"github.com/RafayLabs/rcloud-base/pkg/log"
 
 	"github.com/RafayLabs/rcloud-base/pkg/controller/apply"
+	"github.com/RafayLabs/rcloud-base/pkg/controller/runtime"
 	"github.com/RafayLabs/rcloud-base/pkg/grpc"
 	sentryrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
 	"github.com/RafayLabs/relay/pkg/proxy"
@@ -265,13 +266,13 @@ func (p *authzProvisioner) provisionAuthz(ctx context.Context, auth *sentryrpc.G
 
 	applier := apply.NewApplier(k8sClient)
 
-	/*sao, _, err := runtime.ToObject(auth.ServiceAccount)
+	sao, _, err := runtime.ToUnstructuredObject(auth.ServiceAccount)
 	if err != nil {
 		_log.Infow("unable to make service account runtime object", "error", err)
 		return err
-	}*/
+	}
 
-	err = applier.Apply(ctx, auth.ServiceAccount)
+	err = applier.Apply(ctx, sao)
 	// Ignore already exist error caused due to
 	// multiple inflight request trying to provision
 	// ZTKA JIT service account
@@ -281,13 +282,13 @@ func (p *authzProvisioner) provisionAuthz(ctx context.Context, auth *sentryrpc.G
 	}
 
 	for _, clusterRole := range auth.ClusterRoles {
-		/*cro, _, err := runtime.ToObject(clusterRole)
+		cro, _, err := runtime.ToUnstructuredObject(clusterRole)
 		if err != nil {
 			_log.Infow("unable to make clusterRole runtime object", "error", err)
 			return err
-		}*/
+		}
 
-		err = applier.Apply(ctx, clusterRole)
+		err = applier.Apply(ctx, cro)
 		if err != nil && !strings.Contains(err.Error(), "already exists") {
 			_log.Infow("unable to apply clusterRole", "error", err)
 			return err
@@ -295,13 +296,13 @@ func (p *authzProvisioner) provisionAuthz(ctx context.Context, auth *sentryrpc.G
 	}
 
 	for _, clusterRoleBinding := range auth.ClusterRoleBindings {
-		/*crbo, _, err := runtime.ToObject(clusterRoleBinding)
+		crbo, _, err := runtime.ToUnstructuredObject(clusterRoleBinding)
 		if err != nil {
 			_log.Infow("unable to make clusterRoleBinding runtime object", "error", err)
 			return err
-		}*/
+		}
 
-		err = applier.Apply(ctx, clusterRoleBinding)
+		err = applier.Apply(ctx, crbo)
 		if err != nil && !strings.Contains(err.Error(), "already exists") {
 			_log.Infow("unable to apply clusterRoleBinding", "error", err)
 			return err
@@ -309,13 +310,13 @@ func (p *authzProvisioner) provisionAuthz(ctx context.Context, auth *sentryrpc.G
 	}
 
 	for _, role := range auth.Roles {
-		/*cro, _, err := runtime.ToObject(role)
+		cro, _, err := runtime.ToUnstructuredObject(role)
 		if err != nil {
 			_log.Infow("unable to make roles runtime object", "error", err)
 			return err
-		}*/
+		}
 
-		err = applier.Apply(ctx, role)
+		err = applier.Apply(ctx, cro)
 		if err != nil && !strings.Contains(err.Error(), "already exists") {
 			_log.Infow("unable to apply Role", "error", err)
 			//Ignore any error
@@ -323,13 +324,13 @@ func (p *authzProvisioner) provisionAuthz(ctx context.Context, auth *sentryrpc.G
 	}
 
 	for _, roleBinding := range auth.RoleBindings {
-		/*crbo, _, err := runtime.ToObject(roleBinding)
+		crbo, _, err := runtime.ToUnstructuredObject(roleBinding)
 		if err != nil {
 			_log.Infow("unable to make RoleBinding runtime object", "error", err)
 			return err
-		}*/
+		}
 
-		err = applier.Apply(ctx, roleBinding)
+		err = applier.Apply(ctx, crbo)
 		if err != nil && !strings.Contains(err.Error(), "already exists") {
 			_log.Infow("unable to apply RoleBinding", "error", err)
 			//Ignore any error
