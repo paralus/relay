@@ -221,9 +221,9 @@ func (p *authzProvisioner) provisionAuthzHandleRoleChange(auth *sentryrpc.GetUse
 	defer cancel()
 	// Delete cluster role binding to clean if exist to handle change in user role
 	for _, crb := range auth.DeleteClusterRoleBindings {
-		//crbo, _, err := runtime.ToObject(crb)
+		crbo, _, err := runtime.ToUnstructuredObject(crb)
 		if err == nil {
-			err := k8sDelClient.Delete(nctx, crb)
+			err := k8sDelClient.Delete(nctx, crbo)
 			if err != nil {
 				_log.Debugw("unable to delete ClusterRoleBindings", "name", crb.TypeMeta.GetObjectKind(), "obj", crb, "err", err)
 			} else {
@@ -234,9 +234,9 @@ func (p *authzProvisioner) provisionAuthzHandleRoleChange(auth *sentryrpc.GetUse
 
 	// To handle change in namespace changes delete rolebindings to clean if exist.
 	for _, rb := range auth.DeleteRoleBindings {
-		//rbo, _, err := runtime.ToObject(rb)
+		rbo, _, err := runtime.ToUnstructuredObject(rb)
 		if err == nil {
-			err := k8sDelClient.Delete(nctx, rb)
+			err := k8sDelClient.Delete(nctx, rbo)
 			if err != nil {
 				_log.Debugw("unable to delete RoleBindings", "name", rb.TypeMeta.GetObjectKind(), "obj", rb, "err", err)
 			} else {
