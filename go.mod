@@ -3,7 +3,7 @@ module github.com/RafayLabs/relay
 go 1.17
 
 require (
-	github.com/RafayLabs/rcloud-base v0.0.0-20220425123133-b90e4724d36b
+	github.com/RafayLabs/rcloud-base v0.0.0-20220517133943-1cf82ad0b202
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/felixge/httpsnoop v1.0.1
@@ -89,7 +89,6 @@ require (
 	github.com/segmentio/asm v1.1.3 // indirect
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749 // indirect
 	github.com/shurcooL/vfsgen v0.0.0-20200824052919-0d455de96546 // indirect
-	github.com/speps/go-hashids v2.0.0+incompatible // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
