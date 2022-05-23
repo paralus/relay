@@ -158,12 +158,11 @@ func (rt *cachedRoundTripper) getToken(req *http.Request) (token string, err err
 	ctx, cancel := context.WithTimeout(req.Context(), time.Second*10)
 	defer cancel()
 
-	secret, err := getServiceAccountSecret(ctx, rt.client, userName, namespace)
+	token, err = getServiceAccountToken(ctx, userName, namespace)
 	if err != nil {
 		return "", err
 	}
 
-	token = string(secret.Data[tokenKey])
 	rt.cache.SetWithTTL(key, token, 100, time.Minute*5)
 	return
 
