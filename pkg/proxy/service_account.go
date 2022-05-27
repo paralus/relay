@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/RafayLabs/rcloud-base/pkg/controller/apply"
@@ -14,7 +16,11 @@ import (
 	clusterv2 "github.com/RafayLabs/rcloud-base/proto/types/controller"
 	"github.com/RafayLabs/relay/pkg/relaylogger"
 	"github.com/RafayLabs/relay/pkg/utils"
+	authenticationv1 "k8s.io/api/authentication/v1"
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	k8sclient "sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 )
@@ -29,6 +35,64 @@ const (
 	caCertKey = "ca.crt"
 	tokenKey  = "token"
 )
+
+func getServiceAccountToken(ctx context.Context, name, namespace string) (string, error) {
+	config, err := rest.InClusterConfig()
+	if err != nil {
+		return "", err
+	}
+
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return "", err
+	}
+
+	version, err := clientset.DiscoveryClient.ServerVersion()
+	if err != nil {
+		return "", err
+	}
+
+	major, err := strconv.ParseInt(strings.Trim(version.Major, "+_-"), 10, 64)
+	if err != nil {
+		return "", err
+	}
+	minor, err := strconv.ParseInt(strings.Trim(version.Minor, "+_-"), 10, 64)
+	if err != nil {
+		return "", err
+	}
+
+	if major >= 1 && minor >= 22 {
+		tokenRequest, err := clientset.CoreV1().
+			ServiceAccounts(namespace).
+			CreateToken(ctx, name, &authenticationv1.TokenRequest{}, metav1.CreateOptions{})
+		if err != nil {
+			return "", err
+		}
+
+		return tokenRequest.Status.Token, nil
+	}
+
+	sa, err := clientset.CoreV1().
+		ServiceAccounts(namespace).
+		Get(ctx, name, metav1.GetOptions{})
+	if err != nil {
+		return "", err
+	}
+
+	for _, saSecret := range sa.Secrets {
+
+		secret, err := clientset.CoreV1().Secrets(namespace).Get(ctx, saSecret.Name, metav1.GetOptions{})
+		if err != nil {
+			continue
+		}
+
+		if secret.Type == corev1.SecretTypeServiceAccountToken {
+			return string(secret.Data[tokenKey]), nil
+		}
+	}
+
+	return "", fmt.Errorf("service account %s/%s does not have secrets of type ServiceAccountToken", namespace, name)
+}
 
 // getServiceAccountSecret returns secret for the service account
 func getServiceAccountSecret(ctx context.Context, c k8sclient.Client, name, namespace string) (*corev1.Secret, error) {
