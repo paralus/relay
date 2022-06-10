@@ -15,7 +15,7 @@ const (
 	auditPathEnv         = "AUDIT_PATH"
 	podNameEnv           = "POD_NAME"
 	podNamespaceEnv      = "POD_NAMESPACE"
-	peerServiceURIEnv    = "RAFAY_RELAY_PEERSERVICE"
+	peerServiceURIEnv    = "PARALUS_RELAY_PEERSERVICE"
 	sentryAddrEnv        = "SENTRY_ADDR" // used by relay running inside core
 	bootstrapAddrEnv     = "BOOTSTRAP_ADDR"
 	relayPeeringTokenEnv = "RELAY_PEERING_TOKEN"
@@ -38,8 +38,8 @@ func setupTail() error {
 	viper.AutomaticEnv()
 
 	viper.SetDefault(podNameEnv, "relay-pod")
-	viper.SetDefault(podNamespace, "rafay-system")
-	viper.SetDefault(peerServiceURIEnv, "https://peering.sentry.rafay.local:10001")
+	viper.SetDefault(podNamespace, "paralus-system")
+	viper.SetDefault(peerServiceURIEnv, "https://peering.sentry.paralus.local:10001")
 	viper.SetDefault(sentryAddrEnv, "localhost:10000")
 
 	// for relays running outside of core
@@ -66,7 +66,7 @@ func setupTail() error {
 	bootstrapAddr = viper.GetString(bootstrapAddrEnv)
 
 	if sentryAddr == "" && bootstrapAddr == "" {
-		_log.Infow("missing sentry & bootstrap uri, please set one of the environment variable RAFAY_SENTRY[relay deployed inside core] (or) BOOTSTRAP_ADDR[outside core]")
+		_log.Infow("missing sentry & bootstrap uri, please set one of the environment variable PARALUS_SENTRY[relay deployed inside core] (or) BOOTSTRAP_ADDR[outside core]")
 		return fmt.Errorf("relay server failed in setupserver")
 	}
 
@@ -77,7 +77,7 @@ func setupTail() error {
 	}
 
 	if relayPeeringURI == "" {
-		_log.Infow("missing relay peer service uri, please set RAFAY_RELAY_PEERSERVICE environment variable")
+		_log.Infow("missing relay peer service uri, please set PARALUS_RELAY_PEERSERVICE environment variable")
 		return fmt.Errorf("relay server failed in setupserver")
 	}
 

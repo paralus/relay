@@ -22,7 +22,7 @@ func startClient(wg *sync.WaitGroup, buf []byte) {
 	fmt.Print("stat client")
 	buf3 := make([]byte, 4096)
 	// connect to this socket
-	socketPath := UNIXSOCKET + "kubectldialin.relay.rafay.dev"
+	socketPath := UNIXSOCKET + "kubectldialin.relay.paralus.dev"
 	conn, err := net.DialTimeout("unix", socketPath, 60*time.Second)
 	if err != nil {
 		fmt.Println("failed to connect ", err)
@@ -33,7 +33,7 @@ func startClient(wg *sync.WaitGroup, buf []byte) {
 
 	for {
 		conn.Write(buf)
-		str := "GET /apis/rbac.authorization.k8s.io/v1?timeout=32s HTTP/1.1\r\nHost: 192.168.56.103:6443\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\nX-Rafay-User:namespace-admin-sa\r\nX-Rafay-Namespace: default\r\n\r\n"
+		str := "GET /apis/rbac.authorization.k8s.io/v1?timeout=32s HTTP/1.1\r\nHost: 192.168.56.103:6443\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\nX-Paralus-User:namespace-admin-sa\r\nX-Paralus-Namespace: default\r\n\r\n"
 		conn.Write([]byte(str))
 
 		conn.SetReadDeadline(time.Now().Add(10 * (time.Second)))
@@ -60,7 +60,7 @@ func TestRelayClient(t *testing.T) {
 	fmt.Print("Key to send: ")
 	key, _ := reader.ReadString('\n')
 
-	message := fmt.Sprintf("{\"DialinKey\": \"%s\", \"UserName\": \"namespace-admin-sa\", \"SNI\":  \"cluster1.kubectldialin.relay.rafay.dev\"}", key[:len(key)-1])
+	message := fmt.Sprintf("{\"DialinKey\": \"%s\", \"UserName\": \"namespace-admin-sa\", \"SNI\":  \"cluster1.kubectldialin.relay.paralus.dev\"}", key[:len(key)-1])
 	copy(buf, message)
 
 	fmt.Print("numStr=", numStr)

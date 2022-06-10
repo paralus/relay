@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/RafayLabs/relay/pkg/sessions"
 	"github.com/felixge/httpsnoop"
+	"github.com/paralus/relay/pkg/sessions"
 	"github.com/rs/xid"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -70,14 +70,14 @@ func (a *audit) handler(next http.Handler) http.Handler {
 		fields = append(fields, zap.Int("statusCode", metrics.Code))
 		fields = append(fields, zap.Int64("written", metrics.Written))
 		fields = append(fields, zap.Duration("duration", metrics.Duration))
-		if r.Header.Get("X-Rafay-Audit") == "" {
+		if r.Header.Get("X-Paralus-Audit") == "" {
 			a.logger.Info("access", fields...)
 		} else {
 			a.logger.Info("audit", fields...)
 		}
 
 		if metrics.Code == http.StatusUnauthorized || metrics.Code == http.StatusBadGateway {
-			sessKey := r.Header.Get("X-Rafay-Sessionkey")
+			sessKey := r.Header.Get("X-Paralus-Sessionkey")
 			sessions.SetSessionErrorFlag(sessKey)
 		}
 

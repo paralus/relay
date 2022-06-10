@@ -10,15 +10,15 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/RafayLabs/rcloud-base/pkg/controller/apply"
-	clientutil "github.com/RafayLabs/rcloud-base/pkg/controller/client"
-	"github.com/RafayLabs/rcloud-base/pkg/sentry/register"
-	"github.com/RafayLabs/relay/pkg/cleanup"
-	"github.com/RafayLabs/relay/pkg/proxy"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/tunnel"
-	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/fsnotify/fsnotify"
+	"github.com/paralus/paralus/pkg/controller/apply"
+	clientutil "github.com/paralus/paralus/pkg/controller/client"
+	"github.com/paralus/paralus/pkg/sentry/register"
+	"github.com/paralus/relay/pkg/cleanup"
+	"github.com/paralus/relay/pkg/proxy"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/tunnel"
+	"github.com/paralus/relay/pkg/utils"
 	"github.com/spf13/viper"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -52,7 +52,7 @@ var (
 )
 
 const (
-	rafaySystemNamespace = "rafay-system"
+	paralusSystemNamespace = "paralus-system"
 )
 
 func processRelayConfigData(cfgData string) error {
@@ -70,7 +70,7 @@ func getConfigMap(ctx context.Context, c client.Client, name string) (*corev1.Co
 	cm := corev1.ConfigMap{}
 
 	err := c.Get(ctx, client.ObjectKey{
-		Namespace: rafaySystemNamespace,
+		Namespace: paralusSystemNamespace,
 		Name:      name,
 	}, &cm)
 	if err != nil {
@@ -149,7 +149,7 @@ func getRelayAgentConfig(ctx context.Context) error {
 func setupclient(ctx context.Context, log *relaylogger.RelayLog) error {
 	configName = "relay-agent-config"
 	viper.SetDefault(podNameEnv, "relay-agent")
-	viper.SetDefault(podNamespaceEnv, "rafay-system")
+	viper.SetDefault(podNamespaceEnv, "paralus-system")
 	viper.BindEnv(podNameEnv)
 	viper.BindEnv(podNamespaceEnv)
 
@@ -201,7 +201,7 @@ func setupclient(ctx context.Context, log *relaylogger.RelayLog) error {
 func setupCDClient(ctx context.Context, log *relaylogger.RelayLog) error {
 
 	viper.SetDefault(podNameEnv, "relay-cdagent")
-	viper.SetDefault(podNamespaceEnv, "rafay-system")
+	viper.SetDefault(podNamespaceEnv, "paralus-system")
 	viper.BindEnv(podNameEnv)
 	viper.BindEnv(podNamespaceEnv)
 
@@ -333,7 +333,7 @@ func getRelayCDAgentConfig(ctx context.Context) error {
 	return nil
 }
 
-// registerRelayAgent will register with rafay-core-relay-connector template token
+// registerRelayAgent will register with paralus-core-relay-connector template token
 // registration fetches client-certificate/root-ca to connect to relay server
 func registerRelayAgent(ctx context.Context, rn utils.Relaynetwork) error {
 	cfg := &register.Config{

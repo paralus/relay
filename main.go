@@ -1,5 +1,3 @@
-// Copyright (C) 2020 Rafay Systems https://rafay.co/
-
 package main
 
 import (
@@ -17,11 +15,11 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
-	"github.com/RafayLabs/relay/pkg/agent"
-	"github.com/RafayLabs/relay/pkg/relay"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/tail"
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/relay/pkg/agent"
+	"github.com/paralus/relay/pkg/relay"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/tail"
+	"github.com/paralus/relay/pkg/utils"
 )
 
 var (

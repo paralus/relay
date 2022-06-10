@@ -7,11 +7,11 @@ import (
 
 	"time"
 
-	comgrpc "github.com/RafayLabs/rcloud-base/pkg/grpc"
-	peerclient "github.com/RafayLabs/rcloud-base/pkg/sentry/peering"
-	relayrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/utils"
+	comgrpc "github.com/paralus/paralus/pkg/grpc"
+	peerclient "github.com/paralus/paralus/pkg/sentry/peering"
+	relayrpc "github.com/paralus/paralus/proto/rpc/sentry"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/utils"
 	"google.golang.org/grpc/credentials"
 )
 

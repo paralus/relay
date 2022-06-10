@@ -15,10 +15,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/relaylogger"
 	"github.com/dgraph-io/ristretto"
 	"github.com/felixge/tcpkeepalive"
 	"github.com/google/uuid"
+	"github.com/paralus/relay/pkg/relaylogger"
 )
 
 // Known relay services
@@ -41,9 +41,9 @@ const (
 
 // Relay Network Types
 const (
-	KUBECTLCORE      = "rafay-core-relay-agent"
-	KUBECTLDEDICATED = "rafay-non-core-relay-agent"
-	CDAGENTCORE      = "rafay-core-cd-relay-agent"
+	KUBECTLCORE      = "paralus-core-relay-agent"
+	KUBECTLDEDICATED = "paralus-non-core-relay-agent"
+	CDAGENTCORE      = "paralus-core-cd-relay-agent"
 )
 
 //SNICertificate sni based certs
@@ -99,24 +99,24 @@ const (
 	//HeaderForwardedService ..
 	HeaderForwardedService = "X-Forwarded-Service"
 
-	//HeaderRafayUserName ..
-	HeaderRafayUserName = "X-Rafay-User"
-	//HeaderRafayNamespace ..
-	HeaderRafayNamespace = "X-Rafay-Namespace"
-	//HeaderRafayScope ..
-	HeaderRafayScope = "X-Rafay-Scope"
-	//HeaderRafayAllow ..
-	HeaderRafayAllow = "X-Rafay-Allow"
-	//HeaderRafayAuthZSA yaml contains service account
-	HeaderRafayAuthZSA = "X-Rafay-AuthzSA"
-	//HeaderRafayAuthZRole yaml contains role
-	HeaderRafayAuthZRole = "X-Rafay-AuthzRole"
-	//HeaderRafayAuthZRoleBinding yaml contains rolebinding
-	HeaderRafayAuthZRoleBinding = "X-Rafay-AuthzRoleBinding"
-	//HeaderRafayServiceAccountNoExpire don't expire service account
-	HeaderRafayServiceAccountNoExpire = "X-Rafay-ServiceAccount-NoExpire"
+	//HeaderParalusUserName ..
+	HeaderParalusUserName = "X-Paralus-User"
+	//HeaderParalusNamespace ..
+	HeaderParalusNamespace = "X-Paralus-Namespace"
+	//HeaderParalusScope ..
+	HeaderParalusScope = "X-Paralus-Scope"
+	//HeaderParalusAllow ..
+	HeaderParalusAllow = "X-Paralus-Allow"
+	//HeaderParalusAuthZSA yaml contains service account
+	HeaderParalusAuthZSA = "X-Paralus-AuthzSA"
+	//HeaderParalusAuthZRole yaml contains role
+	HeaderParalusAuthZRole = "X-Paralus-AuthzRole"
+	//HeaderParalusAuthZRoleBinding yaml contains rolebinding
+	HeaderParalusAuthZRoleBinding = "X-Paralus-AuthzRoleBinding"
+	//HeaderParalusServiceAccountNoExpire don't expire service account
+	HeaderParalusServiceAccountNoExpire = "X-Paralus-ServiceAccount-NoExpire"
 	//HeaderClearSecret to clear the current secret cache of user
-	HeaderClearSecret = "X-Rafay-Clear-Cache"
+	HeaderClearSecret = "X-Paralus-Clear-Cache"
 )
 
 // Known actions.
@@ -130,8 +130,8 @@ const (
 	//DefaultAuditPath defailt audit log files path
 	DefaultAuditPath = "-" // - means standard out
 
-	//RafayRelayServiceAccountNameSpace namespace used to create service account for relays
-	RafayRelayServiceAccountNameSpace = "system-sa"
+	//ParalusRelayServiceAccountNameSpace namespace used to create service account for relays
+	ParalusRelayServiceAccountNameSpace = "system-sa"
 )
 
 var (
@@ -300,11 +300,11 @@ type ControlMessage struct {
 	ForwardedHost    string
 	ForwardedService string
 	RemoteAddr       string
-	RafayUserName    string
-	RafayNamespace   string
-	RafayScope       string
-	RafayAllow       string
-	RafayAuthz       string
+	ParalusUserName  string
+	ParalusNamespace string
+	ParalusScope     string
+	ParalusAllow     string
+	ParalusAuthz     string
 }
 
 // ProxyConfig configs for the proxy
@@ -332,11 +332,11 @@ type ProxyProtocolMessage struct {
 }
 
 type ServiceAccountCacheObject struct {
-	RafayAuthzSA       string
-	RafayAuthzRole     string
-	RafayAuthzRoleBind string
-	Md5sum             string
-	Key                string
+	ParalusAuthzSA       string
+	ParalusAuthzRole     string
+	ParalusAuthzRoleBind string
+	Md5sum               string
+	Key                  string
 }
 
 //OnEvict cache on eviction call back function
@@ -382,33 +382,33 @@ func SetXRAYUUID(h http.Header) {
 	// If this isn't the first relay retain prior
 	// UUIDs information as a comma+space
 	// separated list and fold multiple headers into one.
-	if prior, ok := h["X-Rafay-XRAY-RELAYUUID"]; ok {
+	if prior, ok := h["X-Paralus-XRAY-RELAYUUID"]; ok {
 		reluuid = strings.Join(prior, ", ") + ", " + reluuid
 	}
-	h.Set("X-Rafay-XRAY-RELAYUUID", reluuid)
+	h.Set("X-Paralus-XRAY-RELAYUUID", reluuid)
 }
 
-//SetXForwardedRafay set rafay headers
-func SetXForwardedRafay(h http.Header, msg *ControlMessage) {
-	h.Set("X-Rafay-User", msg.RafayUserName)
-	h.Set("X-Rafay-Namespace", msg.RafayNamespace)
-	h.Set("X-Rafay-Scope", msg.RafayScope)
-	h.Set("X-Rafay-Allow", msg.RafayAllow)
+//SetXForwardedParalus set paralus headers
+func SetXForwardedParalus(h http.Header, msg *ControlMessage) {
+	h.Set("X-Paralus-User", msg.ParalusUserName)
+	h.Set("X-Paralus-Namespace", msg.ParalusNamespace)
+	h.Set("X-Paralus-Scope", msg.ParalusScope)
+	h.Set("X-Paralus-Allow", msg.ParalusAllow)
 }
 
-//UnSetXForwardedRafay set rafay headers
-func UnSetXForwardedRafay(h http.Header) {
-	h.Del("X-Rafay-Scope")
-	h.Del("X-Rafay-Allow")
+//UnSetXForwardedParalus set paralus headers
+func UnSetXForwardedParalus(h http.Header) {
+	h.Del("X-Paralus-Scope")
+	h.Del("X-Paralus-Allow")
 	h.Del("X-Forwarded-For")
-	h.Del("X-Rafay-XRAY-RELAYUUID")
-	h.Del("X-Rafay-Audit")
-	h.Del("X-Rafay-Cluster-Id")
-	h.Del("X-Rafay-Cluster-Servername")
-	h.Del("X-Rafay-Peer-Hash")
-	h.Del("X-Rafay-Peer-Nonce")
-	h.Del("X-Rafay-Sessionkey")
-	h.Del("X-Rafay-User-Cert-Issued")
+	h.Del("X-Paralus-XRAY-RELAYUUID")
+	h.Del("X-Paralus-Audit")
+	h.Del("X-Paralus-Cluster-Id")
+	h.Del("X-Paralus-Cluster-Servername")
+	h.Del("X-Paralus-Peer-Hash")
+	h.Del("X-Paralus-Peer-Nonce")
+	h.Del("X-Paralus-Sessionkey")
+	h.Del("X-Paralus-User-Cert-Issued")
 }
 
 //Transfer transfer by io.Copy
@@ -436,10 +436,10 @@ func WriteToHeader(h http.Header, c *ControlMessage) {
 	h.Set(HeaderAction, string(c.Action))
 	h.Set(HeaderForwardedHost, c.ForwardedHost)
 	h.Set(HeaderForwardedService, c.ForwardedService)
-	h.Set(HeaderRafayUserName, c.RafayUserName)
-	h.Set(HeaderRafayNamespace, c.RafayNamespace)
-	h.Set(HeaderRafayScope, c.RafayScope)
-	h.Set(HeaderRafayAllow, c.RafayAllow)
+	h.Set(HeaderParalusUserName, c.ParalusUserName)
+	h.Set(HeaderParalusNamespace, c.ParalusNamespace)
+	h.Set(HeaderParalusScope, c.ParalusScope)
+	h.Set(HeaderParalusAllow, c.ParalusAllow)
 }
 
 func (cw *CountWriter) Write(p []byte) (n int, err error) {
@@ -463,10 +463,10 @@ func ReadControlMessage(r *http.Request) (*ControlMessage, error) {
 		Action:           r.Header.Get(HeaderAction),
 		ForwardedHost:    r.Header.Get(HeaderForwardedHost),
 		ForwardedService: r.Header.Get(HeaderForwardedService),
-		RafayUserName:    r.Header.Get(HeaderRafayUserName),
-		RafayNamespace:   r.Header.Get(HeaderRafayNamespace),
-		RafayScope:       r.Header.Get(HeaderRafayScope),
-		RafayAllow:       r.Header.Get(HeaderRafayAllow),
+		ParalusUserName:  r.Header.Get(HeaderParalusUserName),
+		ParalusNamespace: r.Header.Get(HeaderParalusNamespace),
+		ParalusScope:     r.Header.Get(HeaderParalusScope),
+		ParalusAllow:     r.Header.Get(HeaderParalusAllow),
 		RemoteAddr:       r.RemoteAddr,
 	}
 
@@ -539,7 +539,7 @@ func GetRelayIPPort() string {
 
 //CheckRelayLoops :does XRAY UUDI already present in header?
 func CheckRelayLoops(h http.Header) bool {
-	if uuidHdr, ok := h["X-Rafay-XRAY-RELAYUUID"]; ok {
+	if uuidHdr, ok := h["X-Paralus-XRAY-RELAYUUID"]; ok {
 		allIds := strings.Join(uuidHdr, ", ")
 		matched, err := regexp.Match(RelayUUID, []byte(allIds))
 		if err == nil && matched {
@@ -639,9 +639,9 @@ func IsHTTPS(addr string) bool {
 func PeerSetHeaderNonce(h http.Header) error {
 	key, _ := hex.DecodeString(PEERKEY)
 
-	data := h.Get("X-Rafay-XRAY-RELAYUUID")
+	data := h.Get("X-Paralus-XRAY-RELAYUUID")
 	if data == "" {
-		return fmt.Errorf("no X-Rafay-XRAY-RELAYUUID header")
+		return fmt.Errorf("no X-Paralus-XRAY-RELAYUUID header")
 	}
 	value := []byte(data)
 
@@ -664,8 +664,8 @@ func PeerSetHeaderNonce(h http.Header) error {
 	hash := hex.EncodeToString(ciphertext)
 
 	peerNonce := hex.EncodeToString(nonce)
-	h.Set("X-Rafay-Peer-Nonce", peerNonce)
-	h.Set("X-Rafay-Peer-Hash", hash)
+	h.Set("X-Paralus-Peer-Nonce", peerNonce)
+	h.Set("X-Paralus-Peer-Hash", hash)
 	return nil
 }
 
@@ -673,17 +673,17 @@ func PeerSetHeaderNonce(h http.Header) error {
 func CheckPeerHeaders(h http.Header) bool {
 	key, _ := hex.DecodeString(PEERKEY)
 
-	hash := h.Get("X-Rafay-Peer-Hash")
+	hash := h.Get("X-Paralus-Peer-Hash")
 	if hash == "" {
 		return false
 	}
 
-	peerNonce := h.Get("X-Rafay-Peer-Nonce")
+	peerNonce := h.Get("X-Paralus-Peer-Nonce")
 	if peerNonce == "" {
 		return false
 	}
 
-	expected := h.Get("X-Rafay-XRAY-RELAYUUID")
+	expected := h.Get("X-Paralus-XRAY-RELAYUUID")
 	if expected == "" {
 		return false
 	}

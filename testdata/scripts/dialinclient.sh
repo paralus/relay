@@ -1,1 +1,1 @@
-curl -kv --cert ../certs/clientcerts/relayserver1-ABCD-123456.relay.rafay.dev.crt --key ../certs/clientcerts/relayserver1-ABCD-123456.relay.rafay.dev.key https://cluster1.kubectldialin.relay.rafay.dev/
+curl -kv --cert ../certs/clientcerts/relayserver1-ABCD-123456.relay.paralus.dev.crt --key ../certs/clientcerts/relayserver1-ABCD-123456.relay.paralus.dev.key https://cluster1.kubectldialin.relay.paralus.dev/

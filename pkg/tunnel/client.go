@@ -12,10 +12,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/proxy"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/cenkalti/backoff"
+	"github.com/paralus/relay/pkg/proxy"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/utils"
 	"golang.org/x/net/http2"
 )
 

@@ -10,12 +10,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RafayLabs/rcloud-base/pkg/controller/apply"
-	clientutil "github.com/RafayLabs/rcloud-base/pkg/controller/client"
-	cruntime "github.com/RafayLabs/rcloud-base/pkg/controller/runtime"
-	clusterv2 "github.com/RafayLabs/rcloud-base/proto/types/controller"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/paralus/pkg/controller/apply"
+	clientutil "github.com/paralus/paralus/pkg/controller/client"
+	cruntime "github.com/paralus/paralus/pkg/controller/runtime"
+	clusterv2 "github.com/paralus/paralus/proto/types/controller"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/utils"
 	authenticationv1 "k8s.io/api/authentication/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -126,15 +126,15 @@ func getServiceAccountSecret(ctx context.Context, c k8sclient.Client, name, name
 }
 
 //DeleteServiceAccount from cluster and cache
-func DeleteServiceAccount(key, rafayAuthzSA, rafayAuthzRole, rafayAuthzRoleBind string, delCache bool) {
+func DeleteServiceAccount(key, paralusAuthzSA, paralusAuthzRole, paralusAuthzRoleBind string, delCache bool) {
 	svclogger.Debug(
 		"DeleteServiceAccount",
 		key,
 		"not evicted", delCache,
 	)
-	dstrSA, err1 := base64.StdEncoding.DecodeString(rafayAuthzSA)
-	dstrRole, err2 := base64.StdEncoding.DecodeString(rafayAuthzRole)
-	dstrRB, err3 := base64.StdEncoding.DecodeString(rafayAuthzRoleBind)
+	dstrSA, err1 := base64.StdEncoding.DecodeString(paralusAuthzSA)
+	dstrRole, err2 := base64.StdEncoding.DecodeString(paralusAuthzRole)
+	dstrRB, err3 := base64.StdEncoding.DecodeString(paralusAuthzRoleBind)
 
 	if err1 == nil && err2 == nil && err3 == nil {
 		// delete sa,role,rolebinding

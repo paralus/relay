@@ -1,15 +1,15 @@
 IMG ?= relay:latest
 TS := $(shell /bin/date "+%Y%m%d%H%M%S")
 DEV_USER ?= dev
-DEV_TAG := registry.dev.rafay-edge.net:5000/${DEV_USER}/relay:$(TS)
+DEV_TAG := dockerhub.io/${DEV_USER}/relay:$(TS)
 
 .PHONY: tidy
 tidy:
-	GOPRIVATE=github.com/RafayLabs/* go mod tidy
+	GOPRIVATE=github.com/paralus/* go mod tidy
 
 .PHONY: vendor
 vendor:
-	GOPROXY=direct GOPRIVATE=github.com/RafayLabs/* go mod vendor
+	GOPROXY=direct GOPRIVATE=github.com/paralus/* go mod vendor
 
 check:
 	go fmt ./...

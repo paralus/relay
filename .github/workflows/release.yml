@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: registry.dev.rafay-edge.net
   IMAGE_NAME: ${{ github.repository }}
-  GOPRIVATE: https://github.com/RafayLabs
+  GOPRIVATE: https://github.com/paralus
 
 jobs:
 
@@ -32,7 +32,7 @@ jobs:
 
       - name: Granting private modules access
         run: |
-          git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/RafayLabs".insteadOf "https://github.com/RafayLabs"
+          git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/paralus".insteadOf "https://github.com/paralus"
 
       - name: vendor packages
         run: go mod tidy && go mod vendor

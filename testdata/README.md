@@ -1,4 +1,4 @@
-# rafay-relay unit testing
+# paralus-relay unit testing
 k8s api server relay unit testing
 
 
@@ -10,12 +10,12 @@ Please refer below image to setup your test environtment. You can run server and
 
 ## Testing
 Add entries in /etc/host or in your DNS-server for  the relay-server ipaddress.\
-The User facing DNS is **cluster1.kubectl.relay.rafay.dev**\
-The Dialin facing DNS is **cluster1.kubectldialin.relay.rafay.dev**\
+The User facing DNS is **cluster1.kubectl.relay.paralus.dev**\
+The Dialin facing DNS is **cluster1.kubectldialin.relay.paralus.dev**\
 For example; to run client and server in local system, the /etc/host will have entries like below.
 ```
-127.0.0.1   cluster1.kubectl.relay.rafay.dev
-127.0.0.1   cluster1.kubectldialin.relay.rafay.dev
+127.0.0.1   cluster1.kubectl.relay.paralus.dev
+127.0.0.1   cluster1.kubectldialin.relay.paralus.dev
 ```
 
 ### Client System setup
@@ -65,8 +65,8 @@ Relay server need following environment variables
 POD_NAME - name of the relay instaance (auto generated)
 POD_NAMESPACE - namespace of the relay instance
 
-RAFAY_SENTRY -  URL to boostrap with sentry service
-RAFAY_RELAY_PEERSERVICE - To join gRPC with sentry peer service
+PARALUS_SENTRY -  URL to boostrap with sentry service
+PARALUS_RELAY_PEERSERVICE - To join gRPC with sentry peer service
 
 
 RELAY_USER_DOMAIN - domain suffix for relay user facing server 
@@ -78,11 +78,11 @@ RELAY_CONNECTOR_TOKEN - Relay connector facing server bootstrapping
 
 Examples:
 ```
-export RAFAY_SENTRY=http://sentry.rafay.dev:9000
-export RAFAY_RELAY_PEERSERVICE=http://peering.sentry.rafay.local:7001
+export PARALUS_SENTRY=http://sentry.paralus.dev:9000
+export PARALUS_RELAY_PEERSERVICE=http://peering.sentry.paralus.local:7001
 
-export RELAY_USER_DOMAIN="user.relay.rafay.local"
-export RELAY_CONNECTOR_DOMAIN="core-connector.relay.rafay.local"
+export RELAY_USER_DOMAIN="user.relay.paralus.local"
+export RELAY_CONNECTOR_DOMAIN="core-connector.relay.paralus.local"
 
 export RELAY_TOKEN=bqfvhabipt3a2g46986g
 export RELAY_USER_TOKEN=bqfvhabipt3a2g46987g

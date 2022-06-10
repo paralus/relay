@@ -14,8 +14,8 @@ import (
 
 	"golang.org/x/time/rate"
 
-	"github.com/RafayLabs/rcloud-base/pkg/log"
-	"github.com/RafayLabs/relay/pkg/tail/follower"
+	"github.com/paralus/paralus/pkg/log"
+	"github.com/paralus/relay/pkg/tail/follower"
 )
 
 const (

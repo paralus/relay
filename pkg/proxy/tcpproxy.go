@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/utils"
 	k8proxy "k8s.io/apimachinery/pkg/util/proxy"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )
@@ -34,7 +34,7 @@ func (tp *TCPProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		r.Host = u.Host
 	}
 	r.Header.Set("Host", tp.apiHost)
-	utils.UnSetXForwardedRafay(r.Header)
+	utils.UnSetXForwardedParalus(r.Header)
 	tp.handler.ServeHTTP(w, r)
 }
 
