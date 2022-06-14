@@ -4,9 +4,9 @@ LABEL description="Build container"
 ENV CGO_ENABLED 0
 COPY . /build
 WORKDIR /build
-RUN go build github.com/paralus/relay
+RUN go build -ldflags "-s" github.com/paralus/relay
 
-FROM alpine:latest as runtime
+FROM scratch as runtime
 LABEL description="Run container"
 
 COPY --from=build /build/relay /usr/bin/relay
