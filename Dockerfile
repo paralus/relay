@@ -6,7 +6,7 @@ COPY . /build
 WORKDIR /build
 RUN go build -ldflags "-s" github.com/paralus/relay
 
-FROM scratch as runtime
+FROM alpine:latest as runtime
 LABEL description="Run container"
 
 COPY --from=build /build/relay /usr/bin/relay
