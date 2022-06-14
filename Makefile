@@ -1,7 +1,7 @@
 IMG ?= relay:latest
 TS := $(shell /bin/date "+%Y%m%d%H%M%S")
 DEV_USER ?= dev
-DEV_TAG := dockerhub.io/${DEV_USER}/relay:$(TS)
+DEV_TAG := docker.io/${DEV_USER}/relay:$(TS)
 
 .PHONY: tidy
 tidy:
