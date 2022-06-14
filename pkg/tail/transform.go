@@ -14,8 +14,8 @@ import (
 	"github.com/jinzhu/inflection"
 	"github.com/twmb/murmur3"
 
-	sentryrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
 	"github.com/julienschmidt/httprouter"
+	sentryrpc "github.com/paralus/paralus/proto/rpc/sentry"
 )
 
 var _dummyHandler = func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {}

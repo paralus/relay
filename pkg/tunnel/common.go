@@ -8,7 +8,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/relay/pkg/utils"
 )
 
 type handShakeMsg struct {

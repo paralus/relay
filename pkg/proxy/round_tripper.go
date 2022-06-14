@@ -12,10 +12,10 @@ import (
 
 	"github.com/twmb/murmur3"
 
-	clientutil "github.com/RafayLabs/rcloud-base/pkg/controller/client"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/dgraph-io/ristretto"
+	clientutil "github.com/paralus/paralus/pkg/controller/client"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/utils"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -115,8 +115,8 @@ func getCacheKey(userName, namespace string) (key uint64) {
 }
 
 func (rt *cachedRoundTripper) getToken(req *http.Request) (token string, err error) {
-	userName := req.Header.Get(utils.HeaderRafayUserName)
-	namespace := req.Header.Get(utils.HeaderRafayNamespace)
+	userName := req.Header.Get(utils.HeaderParalusUserName)
+	namespace := req.Header.Get(utils.HeaderParalusNamespace)
 	clearCache := req.Header.Get(utils.HeaderClearSecret)
 	if userName == "" || namespace == "" {
 		logger.Error(
@@ -184,10 +184,10 @@ func (rt *cachedRoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 	req = utilnet.CloneRequest(req)
 
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-	// remove x-rafay heders before sending to kube-apiserver
-	req.Header.Del("X-Rafay-Key")
-	req.Header.Del("X-Rafay-Namespace")
-	req.Header.Del("X-Rafay-User")
+	// remove x-paralus heders before sending to kube-apiserver
+	req.Header.Del("X-Paralus-Key")
+	req.Header.Del("X-Paralus-Namespace")
+	req.Header.Del("X-Paralus-User")
 
 	return rt.rt.RoundTrip(req)
 }

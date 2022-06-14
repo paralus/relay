@@ -10,15 +10,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/RafayLabs/rcloud-base/pkg/log"
+	"github.com/paralus/paralus/pkg/log"
 
-	"github.com/RafayLabs/rcloud-base/pkg/controller/apply"
-	"github.com/RafayLabs/rcloud-base/pkg/controller/runtime"
-	"github.com/RafayLabs/rcloud-base/pkg/grpc"
-	sentryrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
-	"github.com/RafayLabs/relay/pkg/proxy"
-	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/dgraph-io/ristretto"
+	"github.com/paralus/paralus/pkg/controller/apply"
+	"github.com/paralus/paralus/pkg/controller/runtime"
+	"github.com/paralus/paralus/pkg/grpc"
+	sentryrpc "github.com/paralus/paralus/proto/rpc/sentry"
+	"github.com/paralus/relay/pkg/proxy"
+	"github.com/paralus/relay/pkg/utils"
 	"github.com/twmb/murmur3"
 	"google.golang.org/grpc/credentials"
 	"k8s.io/client-go/kubernetes/scheme"
@@ -33,7 +33,7 @@ var (
 )
 
 const (
-	bypassNamespace = "rafay-system"
+	bypassNamespace = "paralus-system"
 )
 
 var bypassUserNames = []string{"system-sa", "default"}
@@ -52,9 +52,9 @@ type bypassWrapper struct {
 }
 
 func (w *bypassWrapper) RoundTrip(r *http.Request) (*http.Response, error) {
-	r.Header.Set("X-Rafay-User", w.bypassUserName)
-	r.Header.Set("X-Rafay-Key", w.key)
-	r.Header.Set("X-Rafay-Namespace", bypassNamespace)
+	r.Header.Set("X-Paralus-User", w.bypassUserName)
+	r.Header.Set("X-Paralus-Key", w.key)
+	r.Header.Set("X-Paralus-Namespace", bypassNamespace)
 
 	if !strings.HasSuffix(r.URL.Path, "/") {
 		r.URL.Path = r.URL.Path + "/"

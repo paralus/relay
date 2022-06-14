@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/RafayLabs/rcloud-base/pkg/sentry/cryptoutil"
-	"github.com/RafayLabs/rcloud-base/pkg/sentry/register"
-	sentryrpc "github.com/RafayLabs/rcloud-base/proto/rpc/sentry"
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/paralus/pkg/sentry/cryptoutil"
+	"github.com/paralus/paralus/pkg/sentry/register"
+	sentryrpc "github.com/paralus/paralus/proto/rpc/sentry"
+	"github.com/paralus/relay/pkg/utils"
 )
 
 // prepare config for outside relay boot strapping
@@ -31,7 +31,7 @@ func prepareConfigCSRForBootStrapOutSideCore(config *register.Config, CN string)
 	csr, err := cryptoutil.CreateCSR(pkix.Name{
 		CommonName:         CN,
 		Country:            []string{"USA"},
-		Organization:       []string{"Rafay Systems Inc"},
+		Organization:       []string{"Paralus"},
 		OrganizationalUnit: []string{config.Name},
 		Province:           []string{"California"},
 		Locality:           []string{"Sunnyvale"},
@@ -45,7 +45,7 @@ func prepareConfigCSRForBootStrapOutSideCore(config *register.Config, CN string)
 	return nil
 }
 
-// registerRelayPeerService will register with  rafay-sentry-peering-client template token
+// registerRelayPeerService will register with  paralus-sentry-peering-client template token
 // registration fetches client-certificate/root-ca to connect to sentry peer service
 func registerRelayPeerService(ctx context.Context) (*register.Config, error) {
 	cfg := &register.Config{
@@ -75,7 +75,7 @@ func registerRelayPeerService(ctx context.Context) (*register.Config, error) {
 		cfg.TemplateToken = "template/-"
 		cfg.Addr = sentryAddr
 		cfg.Scheme = "grpc"
-		cfg.TemplateName = "rafay-sentry-peering-client"
+		cfg.TemplateName = "paralus-sentry-peering-client"
 	}
 
 	if err := register.Register(ctx, cfg); err != nil {

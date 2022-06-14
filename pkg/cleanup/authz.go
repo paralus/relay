@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	clientutil "github.com/RafayLabs/rcloud-base/pkg/controller/client"
-	"github.com/RafayLabs/rcloud-base/pkg/log"
+	clientutil "github.com/paralus/paralus/pkg/controller/client"
+	"github.com/paralus/paralus/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	corev1 "k8s.io/api/core/v1"
@@ -25,9 +25,9 @@ const (
 	// any authz which is olderThan this should be cleaned up
 	olderThan = time.Hour * 8
 
-	rafayRelayLabel   = "rafay-relay"
+	paralusRelayLabel = "paralus-relay"
 	authzRefreshLabel = "authz-refreshed"
-	rafaySystemNS     = "rafay-system"
+	paralusSystemNS   = "paralus-system"
 
 	maxResults = 50
 )
@@ -35,7 +35,7 @@ const (
 func getMatchingLabelSelector() (sel client.MatchingLabelsSelector, err error) {
 	var relayLabelReq, refreshLabelReq *labels.Requirement
 
-	relayLabelReq, err = labels.NewRequirement(rafayRelayLabel, selection.Equals, []string{"true"})
+	relayLabelReq, err = labels.NewRequirement(paralusRelayLabel, selection.Equals, []string{"true"})
 	if err != nil {
 		_log.Infow("unable to create relay label requirment", "error", err)
 		return
@@ -61,7 +61,7 @@ func cleanServiceAccounts(ctx context.Context, c client.Client, sel client.Match
 
 	var saList corev1.ServiceAccountList
 
-	err := c.List(nCtx, &saList, sel, client.InNamespace(rafaySystemNS), client.Limit(maxResults))
+	err := c.List(nCtx, &saList, sel, client.InNamespace(paralusSystemNS), client.Limit(maxResults))
 	if err != nil {
 		_log.Infow("unable to list service accounts", "error", err)
 		return

@@ -1,9 +1,8 @@
-module github.com/RafayLabs/relay
+module github.com/paralus/relay
 
 go 1.17
 
 require (
-	github.com/RafayLabs/rcloud-base v0.0.0-20220517133943-1cf82ad0b202
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/felixge/httpsnoop v1.0.1
@@ -13,6 +12,7 @@ require (
 	github.com/inconshreveable/go-vhost v0.0.0-20160627193104-06d84117953b
 	github.com/jinzhu/inflection v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
+	github.com/paralus/paralus v0.0.0-20220610083417-845812b5f7f2
 	github.com/rs/xid v1.3.0
 	github.com/segmentio/encoding v0.3.4
 	github.com/spf13/pflag v1.0.5

@@ -9,18 +9,18 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/RafayLabs/rcloud-base/pkg/sentry/cryptoutil"
-	"github.com/RafayLabs/rcloud-base/pkg/sentry/register"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/tunnel"
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/paralus/pkg/sentry/cryptoutil"
+	"github.com/paralus/paralus/pkg/sentry/register"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/tunnel"
+	"github.com/paralus/relay/pkg/utils"
 	"github.com/spf13/viper"
 )
 
 const (
 	podNameEnv        = "POD_NAME"
 	podNamespaceEnv   = "POD_NAMESPACE"
-	peerServiceURIEnv = "RAFAY_RELAY_PEERSERVICE"
+	peerServiceURIEnv = "PARALUS_RELAY_PEERSERVICE"
 	relayListenIPEnv  = "RELAY_LISTENIP"
 	sentryAddrEnv     = "SENTRY_ADDR" // used by relay running inside core
 	auditPathEnv      = "AUDIT_PATH"
@@ -70,8 +70,8 @@ func setupserver(log *relaylogger.RelayLog) error {
 	viper.AutomaticEnv()
 
 	viper.SetDefault(podNameEnv, "relay-pod")
-	viper.SetDefault(podNamespace, "rafay-system")
-	viper.SetDefault(peerServiceURIEnv, "https://peering.sentry.rafay.local:10001")
+	viper.SetDefault(podNamespace, "paralus-system")
+	viper.SetDefault(peerServiceURIEnv, "https://peering.sentry.paralus.local:10001")
 	viper.SetDefault(sentryAddrEnv, "localhost:10000")
 
 	// for relays running outside of core
@@ -83,7 +83,7 @@ func setupserver(log *relaylogger.RelayLog) error {
 	viper.SetDefault(relayConnectorHostPortEnv, "")
 	viper.SetDefault(auditPathEnv, "/tmp")
 	viper.SetDefault(metricListenEnv, ":8003")
-	viper.SetDefault(relayNetworkIDEnv, "rafay-core-64a66h0asw")
+	viper.SetDefault(relayNetworkIDEnv, "paralus-core-64a66h0asw")
 
 	viper.BindEnv(podNameEnv)
 	viper.BindEnv(podNamespaceEnv)
@@ -119,7 +119,7 @@ func setupserver(log *relaylogger.RelayLog) error {
 	if sentryAddr == "" && bootstrapAddr == "" {
 		log.Error(
 			nil,
-			"missing sentry & bootstrap uri, please set one of the environment variable RAFAY_SENTRY[relay deployed inside core] (or) BOOTSTRAP_ADDR[outside core]",
+			"missing sentry & bootstrap uri, please set one of the environment variable PARALUS_SENTRY[relay deployed inside core] (or) BOOTSTRAP_ADDR[outside core]",
 		)
 		return fmt.Errorf("relay server failed in setupserver")
 	}
@@ -133,7 +133,7 @@ func setupserver(log *relaylogger.RelayLog) error {
 	if relayPeeringURI == "" {
 		log.Error(
 			nil,
-			"missing relay peer service uri, please set RAFAY_RELAY_PEERSERVICE environment variable",
+			"missing relay peer service uri, please set PARALUS_RELAY_PEERSERVICE environment variable",
 		)
 		return fmt.Errorf("relay server failed in setupserver")
 	}
@@ -222,8 +222,8 @@ func setupCDServer(log *relaylogger.RelayLog) error {
 	viper.AutomaticEnv()
 
 	viper.SetDefault(podNameEnv, "cdrelay-pod")
-	viper.SetDefault(podNamespace, "rafay-system")
-	viper.SetDefault(peerServiceURIEnv, "https://peering.sentry.rafay.local:10001")
+	viper.SetDefault(podNamespace, "paralus-system")
+	viper.SetDefault(peerServiceURIEnv, "https://peering.sentry.paralus.local:10001")
 	viper.SetDefault(sentryAddrEnv, "localhost:10000")
 
 	// for relays running outside of core
@@ -259,7 +259,7 @@ func setupCDServer(log *relaylogger.RelayLog) error {
 	if sentryAddr == "" {
 		log.Error(
 			nil,
-			"missing sentry uri, please set one of the environment variable RAFAY_SENTRY[relay deployed inside core] (or) BOOTSTRAP_ADDR[outside core]",
+			"missing sentry uri, please set one of the environment variable PARALUS_SENTRY[relay deployed inside core] (or) BOOTSTRAP_ADDR[outside core]",
 		)
 		return fmt.Errorf("relay server failed in setupserver")
 	}
@@ -267,7 +267,7 @@ func setupCDServer(log *relaylogger.RelayLog) error {
 	if relayPeeringURI == "" {
 		log.Error(
 			nil,
-			"missing relay peer service uri, please set RAFAY_RELAY_PEERSERVICE environment variable",
+			"missing relay peer service uri, please set PARALUS_RELAY_PEERSERVICE environment variable",
 		)
 		return fmt.Errorf("relay server failed in setupserver")
 	}
@@ -315,7 +315,7 @@ func prepareConfigCSRForBootStrapOutSideCore(config *register.Config, CN string,
 	csr, err := cryptoutil.CreateCSR(pkix.Name{
 		CommonName:         CN,
 		Country:            []string{"USA"},
-		Organization:       []string{"Rafay Systems Inc"},
+		Organization:       []string{"Paralus"},
 		Province:           []string{"California"},
 		Locality:           []string{"Sunnyvale"},
 		OrganizationalUnit: []string{relayNetworkID},
@@ -332,7 +332,7 @@ func prepareConfigCSRForBootStrapOutSideCore(config *register.Config, CN string,
 	return nil
 }
 
-// registerRelayPeerService will register with  rafay-sentry-peering-client template token
+// registerRelayPeerService will register with  paralus-sentry-peering-client template token
 // registration fetches client-certificate/root-ca to connect to sentry peer service
 func registerRelayPeerService(ctx context.Context, log *relaylogger.RelayLog) error {
 	cfg := &register.Config{
@@ -363,7 +363,7 @@ func registerRelayPeerService(ctx context.Context, log *relaylogger.RelayLog) er
 		cfg.TemplateToken = "template/-"
 		cfg.Addr = sentryAddr
 		cfg.Scheme = "grpc"
-		cfg.TemplateName = "rafay-sentry-peering-client"
+		cfg.TemplateName = "paralus-sentry-peering-client"
 	}
 
 	if err := register.Register(ctx, cfg); err != nil {
@@ -387,7 +387,7 @@ func registerRelayPeerService(ctx context.Context, log *relaylogger.RelayLog) er
 	return nil
 }
 
-// registerCDRelayPeerService will register with  rafay-sentry-cd-peering-client template token
+// registerCDRelayPeerService will register with  paralus-sentry-cd-peering-client template token
 // registration fetches client-certificate/root-ca to connect to sentry peer service
 func registerCDRelayPeerService(ctx context.Context, log *relaylogger.RelayLog) error {
 	cfg := &register.Config{
@@ -418,7 +418,7 @@ func registerCDRelayPeerService(ctx context.Context, log *relaylogger.RelayLog) 
 		cfg.TemplateToken = "template/cd-relay"
 		cfg.Addr = sentryAddr
 		cfg.Scheme = "grpc"
-		cfg.TemplateName = "rafay-sentry-cd-peering-client"
+		cfg.TemplateName = "paralus-sentry-cd-peering-client"
 	}
 
 	if err := register.Register(ctx, cfg); err != nil {
@@ -442,7 +442,7 @@ func registerCDRelayPeerService(ctx context.Context, log *relaylogger.RelayLog) 
 	return nil
 }
 
-// registerRelayUserServer will register with rafay-core-relay-user template token
+// registerRelayUserServer will register with paralus-core-relay-user template token
 // registration fetches client-certificate/root-ca to terminate user connections
 // the same certificate will be used as the client cert for peer-upstreams
 func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) error {
@@ -475,7 +475,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 	} else {
 		cfg.Addr = sentryAddr
 		cfg.Scheme = "grpc"
-		cfg.TemplateName = "rafay-core-relay-user"
+		cfg.TemplateName = "paralus-core-relay-user"
 	}
 
 	if err := register.Register(ctx, cfg); err != nil {
@@ -500,7 +500,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 	return nil
 }
 
-// registerCDRelayUserServer will register with rafay-core-cd-relay-user template token
+// registerCDRelayUserServer will register with paralus-core-cd-relay-user template token
 // registration fetches client-certificate/root-ca to terminate user connections
 // the same certificate will be used as the client cert for peer-upstreams
 func registerCDRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) error {
@@ -514,7 +514,7 @@ func registerCDRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) e
 	//inside core bootstrap
 	cfg.Addr = sentryAddr
 	cfg.Scheme = "grpc"
-	cfg.TemplateName = "rafay-core-cd-relay-user"
+	cfg.TemplateName = "paralus-core-cd-relay-user"
 
 	if err := register.Register(ctx, cfg); err != nil {
 		log.Error(
@@ -538,7 +538,7 @@ func registerCDRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) e
 	return nil
 }
 
-// registerRelayConnectorServer will register with rafay-core-relay-connector template token
+// registerRelayConnectorServer will register with paralus-core-relay-connector template token
 // registration fetches client-certificate/root-ca to terminate connector connections
 // the same certificate will be used as the client cert for peer-upstreams
 func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog) error {
@@ -572,7 +572,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 		//inside core bootstrap
 		cfg.Addr = sentryAddr
 		cfg.Scheme = "grpc"
-		cfg.TemplateName = "rafay-core-relay-server"
+		cfg.TemplateName = "paralus-core-relay-server"
 	}
 
 	if err := register.Register(ctx, cfg); err != nil {
@@ -597,7 +597,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 	return nil
 }
 
-// registerCDRelayConnectorServer will register with rafay-core-cd-relay-connector template token
+// registerCDRelayConnectorServer will register with paralus-core-cd-relay-connector template token
 // registration fetches client-certificate/root-ca to terminate connector connections
 // the same certificate will be used as the client cert for peer-upstreams
 func registerCDRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog) error {
@@ -611,7 +611,7 @@ func registerCDRelayConnectorServer(ctx context.Context, log *relaylogger.RelayL
 	//inside core bootstrap
 	cfg.Addr = sentryAddr
 	cfg.Scheme = "grpc"
-	cfg.TemplateName = "rafay-core-cd-relay-server"
+	cfg.TemplateName = "paralus-core-cd-relay-server"
 
 	if err := register.Register(ctx, cfg); err != nil {
 		log.Error(

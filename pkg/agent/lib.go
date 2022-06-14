@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/utils"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/utils"
 )
 
 // RunCDAgentRoutine starts cd agent. run as a go routine

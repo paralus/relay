@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/dgraph-io/ristretto"
+	"github.com/paralus/relay/pkg/utils"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	k8proxy "k8s.io/apimachinery/pkg/util/proxy"
 	"k8s.io/client-go/rest"

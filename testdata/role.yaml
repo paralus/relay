@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: default
-  namespace: rafay-system
+  namespace: paralus-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -32,12 +32,12 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: rafay-system
+  namespace: paralus-system
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: rafay-core-debug
+  name: paralus-core-debug
   namespace: default
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -66,5 +66,5 @@ roleRef:
   name: relay-role
 subjects:
 - kind: ServiceAccount
-  name: rafay-core-debug
+  name: paralus-core-debug
   namespace: default

@@ -1,5 +1,3 @@
-// Copyright (C) 2020 Rafay Systems https://rafay.co/
-
 package tunnel
 
 import (
@@ -17,14 +15,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/RafayLabs/relay/pkg/proxy"
-	"github.com/RafayLabs/relay/pkg/relaylogger"
-	"github.com/RafayLabs/relay/pkg/sessions"
+	"github.com/paralus/relay/pkg/proxy"
+	"github.com/paralus/relay/pkg/relaylogger"
+	"github.com/paralus/relay/pkg/sessions"
 
-	peerclient "github.com/RafayLabs/rcloud-base/pkg/sentry/peering"
-	"github.com/RafayLabs/relay/pkg/audit"
-	"github.com/RafayLabs/relay/pkg/utils"
 	"github.com/inconshreveable/go-vhost"
+	peerclient "github.com/paralus/paralus/pkg/sentry/peering"
+	"github.com/paralus/relay/pkg/audit"
+	"github.com/paralus/relay/pkg/utils"
 	"golang.org/x/net/http2"
 )
 
@@ -389,7 +387,7 @@ func (srv *Server) ProcessPeerForwards(w http.ResponseWriter, r *http.Request, l
 	//Update the UUID in the header to detect loops
 	utils.SetXRAYUUID(r.Header)
 
-	r.Header.Set("X-Rafay-User-Cert-Issued", strconv.FormatInt(certIssue, 10))
+	r.Header.Set("X-Paralus-User-Cert-Issued", strconv.FormatInt(certIssue, 10))
 
 	// set peer security upstream headers
 	err = utils.PeerSetHeaderNonce(r.Header)
@@ -457,7 +455,7 @@ processCDPeerForwardDone:
 //ProcessRelayRequest process user-facing request
 func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, lg *relaylogger.RelayLog) {
 	var (
-		rafayUserName     string
+		paralusUserName   string
 		sessionKey        string
 		clusterServerName string
 		clusterID         string
@@ -527,15 +525,15 @@ func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, l
 	sessionKey = ""
 	session = nil
 	//check the request is from a peer relay
-	if r.Header.Get("X-Rafay-XRAY-RELAYUUID") == "" {
+	if r.Header.Get("X-Paralus-XRAY-RELAYUUID") == "" {
 		srvlog.Debug(
 			"procesing user request common name from cert",
 			"CN", r.TLS.PeerCertificates[0].Subject.CommonName,
 		)
 
 		//User name is extracted from client certificate CN
-		rafayUserName = r.TLS.PeerCertificates[0].Subject.CommonName
-		sessionKey = r.TLS.ServerName + ":" + rafayUserName
+		paralusUserName = r.TLS.PeerCertificates[0].Subject.CommonName
+		sessionKey = r.TLS.ServerName + ":" + paralusUserName
 		session, ok = sessions.GetUserSession(sessionKey)
 		if !ok {
 			//Create session for the user
@@ -575,13 +573,13 @@ func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, l
 			if utils.CheckRelayLoops(r.Header) {
 				var allIds string
 
-				if uuidHdr, ok := r.Header["X-Rafay-XRAY-RELAYUUID"]; ok {
+				if uuidHdr, ok := r.Header["X-Paralus-XRAY-RELAYUUID"]; ok {
 					allIds = strings.Join(uuidHdr, ", ")
 				}
 				srvlog.Error(
 					fmt.Errorf("LOOP detected in peerforwards"),
 					"failed peer loop detection check RelayUUID", utils.RelayUUID,
-					"header X-Rafay-XRAY-RELAYUUID allIds", allIds,
+					"header X-Paralus-XRAY-RELAYUUID allIds", allIds,
 				)
 			}
 		*/
@@ -595,10 +593,10 @@ func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, l
 			return
 		}
 
-		rafayUserName = r.Header.Get("X-Rafay-User")
-		clusterServerName = r.Header.Get("X-Rafay-Cluster-ServerName")
-		clusterID = r.Header.Get("X-Rafay-Cluster-ID")
-		issDateSecStr := r.Header.Get("X-Rafay-User-Cert-Issued")
+		paralusUserName = r.Header.Get("X-Paralus-User")
+		clusterServerName = r.Header.Get("X-Paralus-Cluster-ServerName")
+		clusterID = r.Header.Get("X-Paralus-Cluster-ID")
+		issDateSecStr := r.Header.Get("X-Paralus-User-Cert-Issued")
 		if issDateSecStr == "" {
 			srvlog.Error(
 				fmt.Errorf("peer did not send a valid user cert issue date header"),
@@ -615,26 +613,26 @@ func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, l
 
 		srvlog.Debug(
 			"forwarded request from peer",
-			"rafayUserName", rafayUserName,
+			"paralusUserName", paralusUserName,
 			"clusterServerName", clusterServerName,
 			"clusterID", clusterID,
 			"certIssue:", certIssue,
 		)
 
-		if rafayUserName == "" || clusterServerName == "" || clusterID == "" {
+		if paralusUserName == "" || clusterServerName == "" || clusterID == "" {
 			srvlog.Error(
 				nil,
 				"Did not find required headers",
-				"X-Rafay-User", rafayUserName,
-				"X-Rafay-Cluster-Name", clusterServerName,
-				"X-Rafay-Cluster-ID", clusterID,
+				"X-Paralus-User", paralusUserName,
+				"X-Paralus-Cluster-Name", clusterServerName,
+				"X-Paralus-Cluster-ID", clusterID,
 			)
 			errStirng := "ERROR: Unauthenticated access not allowed (kubeconfig invalid cert). Please log in to the portal and download new kubeconfig"
 			jsonError(w, errStirng, "failed to find user/cluster details", http.StatusUnauthorized)
 			return
 		}
 
-		sessionKey = clusterServerName + ":" + rafayUserName
+		sessionKey = clusterServerName + ":" + paralusUserName
 		session, ok = sessions.GetUserSession(sessionKey)
 		if !ok {
 			//Create session for the user
@@ -662,7 +660,7 @@ func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, l
 		dialinSNI = strings.ReplaceAll(srv.DialinServerName, "*", clusterID)
 		dialinAttempt = 0
 	}
-	r.Header.Set("X-Rafay-Audit", "yes")
+	r.Header.Set("X-Paralus-Audit", "yes")
 
 retryDialin:
 	// get the dialin server instance
@@ -681,10 +679,10 @@ retryDialin:
 				relayIP, found := peerclient.GetPeerCache(utils.PeerCache, dialinSNI)
 				if found {
 					// forward the client request to peer upstream
-					r.Header.Set("X-Rafay-User", rafayUserName)
-					r.Header.Set("X-Rafay-Cluster-ServerName", r.TLS.ServerName)
-					r.Header.Set("X-Rafay-Cluster-ID", clusterID)
-					r.Header.Del("X-Rafay-Audit")
+					r.Header.Set("X-Paralus-User", paralusUserName)
+					r.Header.Set("X-Paralus-Cluster-ServerName", r.TLS.ServerName)
+					r.Header.Set("X-Paralus-Cluster-ID", clusterID)
+					r.Header.Del("X-Paralus-Audit")
 					srv.ProcessPeerForwards(w, r, lg, relayIP, certIssue)
 					return
 				} else {
@@ -725,7 +723,7 @@ retryDialin:
 		socketPath := utils.UNIXSOCKET + srv.DialinServerName
 
 		if session.UserName == "" {
-			userName, roleName, isRead, isOrgAdmin, enforceOrgAdminSecret, err := srv.Provisioner.ProvisionAuthzForUser(socketPath, rafayUserName, r.TLS.ServerName, session.DialinCachedKey, session.ErrorFlag, false, certIssue)
+			userName, roleName, isRead, isOrgAdmin, enforceOrgAdminSecret, err := srv.Provisioner.ProvisionAuthzForUser(socketPath, paralusUserName, r.TLS.ServerName, session.DialinCachedKey, session.ErrorFlag, false, certIssue)
 			if err != nil {
 				var errStirng string
 				srvlog.Error(
@@ -749,7 +747,7 @@ retryDialin:
 			session.EnforceOrgAdminOnlySecret = enforceOrgAdminSecret
 		} else {
 			go func() {
-				_, roleName, isRead, isOrgAdmin, enforceOrgAdminSecret, err := srv.Provisioner.ProvisionAuthzForUser(socketPath, rafayUserName, r.TLS.ServerName, session.DialinCachedKey, session.ErrorFlag, true, certIssue)
+				_, roleName, isRead, isOrgAdmin, enforceOrgAdminSecret, err := srv.Provisioner.ProvisionAuthzForUser(socketPath, paralusUserName, r.TLS.ServerName, session.DialinCachedKey, session.ErrorFlag, true, certIssue)
 				if err != nil {
 					srvlog.Error(
 						err,
@@ -782,7 +780,7 @@ retryDialin:
 		}
 
 		//setsup the upgradeaware unix handler
-		unixHandler, err := proxy.UnixKubeHandler(socketPath, session.DialinCachedKey, rafayUserName, r.TLS.ServerName)
+		unixHandler, err := proxy.UnixKubeHandler(socketPath, session.DialinCachedKey, paralusUserName, r.TLS.ServerName)
 		if err != nil {
 			srvlog.Error(
 				err,
@@ -795,10 +793,10 @@ retryDialin:
 
 		//These are the headers used by relay-agent to fetch
 		//user information.
-		r.Header.Set("X-Rafay-User", session.UserName)
-		r.Header.Set("X-Rafay-Key", session.DialinCachedKey)
-		r.Header.Set("X-Rafay-Namespace", "rafay-system")
-		r.Header.Set("X-Rafay-Sessionkey", sessionKey)
+		r.Header.Set("X-Paralus-User", session.UserName)
+		r.Header.Set("X-Paralus-Key", session.DialinCachedKey)
+		r.Header.Set("X-Paralus-Namespace", "paralus-system")
+		r.Header.Set("X-Paralus-Sessionkey", sessionKey)
 		utils.SetXForwardedFor(r.Header, r.RemoteAddr)
 		utils.SetXRAYUUID(r.Header)
 		if session.ErrorFlag {
@@ -1105,10 +1103,10 @@ func (srv *Server) proxyUnixConnection(ctx context.Context, conn net.Conn, lg *r
 		Action:           utils.ActionProxy,
 		ForwardedHost:    pmsg.SNI,
 		ForwardedService: srv.Name,
-		RafayUserName:    pmsg.UserName, // for testing only
-		RafayNamespace:   "default",     // for testing only
-		RafayScope:       "default",     // for testing only
-		RafayAllow:       "true",        // for testing only
+		ParalusUserName:  pmsg.UserName, // for testing only
+		ParalusNamespace: "default",     // for testing only
+		ParalusScope:     "default",     // for testing only
+		ParalusAllow:     "true",        // for testing only
 	}
 
 	req, err := srv.connectRequest(pmsg.DialinKey, msg, pr)
@@ -1164,7 +1162,7 @@ proxyUnixConnectionDone:
 	time.Sleep(2 * time.Second)
 }
 
-func (srv *Server) proxyCDDilainConnection(ctx context.Context, conn net.Conn, dialinKey, rafayUserName, sni string, lg *relaylogger.RelayLog) {
+func (srv *Server) proxyCDDilainConnection(ctx context.Context, conn net.Conn, dialinKey, paralusUserName, sni string, lg *relaylogger.RelayLog) {
 	defer conn.Close()
 	conn.SetReadDeadline(time.Now().Add(utils.DefaultTimeout))
 
@@ -1176,10 +1174,10 @@ func (srv *Server) proxyCDDilainConnection(ctx context.Context, conn net.Conn, d
 		Action:           utils.ActionProxy,
 		ForwardedHost:    sni,
 		ForwardedService: srv.ServerName,
-		RafayUserName:    rafayUserName, // for testing only
-		RafayNamespace:   "default",     // for testing only
-		RafayScope:       "default",     // for testing only
-		RafayAllow:       "true",        // for testing only
+		ParalusUserName:  paralusUserName, // for testing only
+		ParalusNamespace: "default",       // for testing only
+		ParalusScope:     "default",       // for testing only
+		ParalusAllow:     "true",          // for testing only
 	}
 
 	req, err := srv.connectRequest(dialinKey, msg, pr)
@@ -1480,12 +1478,12 @@ func (srv *Server) sendDialinHandshake(key string, lg *relaylogger.RelayLog) err
 
 func (srv *Server) processCDRelayTLSState(ctx context.Context, conn net.Conn, lg *relaylogger.RelayLog, tlsconfig *tls.Config) (*Server, error) {
 	var (
-		rafayUserName string
-		sessionKey    string
-		dialinSNI     string
-		dialinAttempt int
-		ok            bool
-		session       *sessions.UserSession
+		paralusUserName string
+		sessionKey      string
+		dialinSNI       string
+		dialinAttempt   int
+		ok              bool
+		session         *sessions.UserSession
 	)
 
 	tlsConn, ok := conn.(*tls.Conn)
@@ -1569,8 +1567,8 @@ func (srv *Server) processCDRelayTLSState(ctx context.Context, conn net.Conn, lg
 
 	sessionKey = ""
 	session = nil
-	rafayUserName = state.PeerCertificates[0].Subject.CommonName
-	sessionKey = state.ServerName + ":" + rafayUserName
+	paralusUserName = state.PeerCertificates[0].Subject.CommonName
+	sessionKey = state.ServerName + ":" + paralusUserName
 	session, ok = sessions.GetUserSession(sessionKey)
 	if !ok {
 		//Create session for the user
@@ -1649,10 +1647,10 @@ retryCDDialin:
 			"sessionKey", sessionKey,
 		)
 
-		session.UserName = rafayUserName
+		session.UserName = paralusUserName
 
 		//dilain proxy
-		dsrv.proxyCDDilainConnection(ctx, conn, session.DialinCachedKey, rafayUserName, state.ServerName, slog)
+		dsrv.proxyCDDilainConnection(ctx, conn, session.DialinCachedKey, paralusUserName, state.ServerName, slog)
 	} else {
 		slog.Info(
 			"did not find dialin server name ",

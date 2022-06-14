@@ -23,10 +23,8 @@ func worker1(ctx context.Context, index int) {
 			fmt.Println("worker1 ", index, " done: success", success, "errcnt ", errCnt)
 			return
 		default:
-			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "../kubectlconfigs/kubeconfigproxy-123abcd.user.relay.rafay.local", "get", "pods", "-o", "yaml").Output()
-			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/Users/stephanbenny/WorkSpace/kubeconfig-c-5", "get", "all", "-A").Output()
-			out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/Users/stephanbenny/WorkSpace/kubeconfig-c-5", "get", "pods").Output()
-			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/Users/stephanbenny/WorkSpace/kubeconfig-c-5", "get", "pods", "-o", "yaml").Output()
+			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "../kubectlconfigs/kubeconfigproxy-123abcd.user.relay.paralus.local", "get", "pods", "-o", "yaml").Output()
+			out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/WorkSpace/kubeconfig-c-5", "get", "pods").Output()
 			if err != nil {
 				errCnt++
 			} else {
@@ -51,10 +49,8 @@ func worker2(ctx context.Context, index int) {
 			fmt.Println("worker2 ", index, " done: success", success, "errcnt ", errCnt)
 			return
 		default:
-			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "../kubectlconfigs/kubeconfigproxy-123abcd.user.relay.rafay.local", "get", "pods", "-o", "yaml").Output()
-			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/Users/stephanbenny/WorkSpace/kubeconfig-c-6", "get", "all", "-A").Output()
-			out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/Users/stephanbenny/WorkSpace/kubeconfig-c-6", "get", "pods").Output()
-			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/Users/stephanbenny/WorkSpace/kubeconfig-c-5", "get", "pods", "-o", "yaml").Output()
+			//out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "../kubectlconfigs/kubeconfigproxy-123abcd.user.relay.paralus.local", "get", "pods", "-o", "yaml").Output()
+			out, err := exec.Command("/usr/local/bin/kubectl", "--kubeconfig", "/WorkSpace/kubeconfig-c-6", "get", "pods").Output()
 			if err != nil {
 				errCnt++
 			} else {
