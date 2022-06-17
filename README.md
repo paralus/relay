@@ -6,13 +6,17 @@ Relay server and agent for kubectl access.
 
 Relay depends on [paralus](https://github.com/paralus/paralus) and you need to check out this repo.
 
-Go to paralus
+### Using docker-compose
 
-```bash
-make teardown 
-make setup
-make run
-```
+Run following Docker Compose command to setup all requirements like Postgres db, Kratos etc. for core.
+
+This will start up postgres and elasticsearch as well as kratos and run the kratos migrations. It will also run all the necessary migrations. It also starts up a mail slurper for you to use Kratos.
+
+  `docker-compose --env-file ./env.example up -d`
+
+Start paralus:
+
+  `go run github.com/paralus/paralus`
 
 ### Paralus Relay Server
 
