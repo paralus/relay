@@ -1,3 +1,16 @@
+We 💚 Opensource!
+
+Yes, because we feel that it’s the best way to build and improve a product. It allows people like you from across the globe to contribute and improve a product over time. And we’re super happy to see that you’d like to contribute to Paralus dashboard.
+
+We are always on the lookout for anything that can improve the product. Be it feature requests, issues/bugs, code or content, we’d love to see what you’ve got to make this better. If you’ve got anything exciting and would love to contribute, this is the right place to begin your journey as a contributor to Paralus dashboard and the larger open source community.
+
+**How to get started?**
+The easiest way to start is to look at existing issues and see if there’s something there that you’d like to work on. You can filter issues with the label [“[Good first issue](https://github.com/paralus/relay/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)” which are relatively self sufficient issues and great for first time contributors.
+
+Once you decide on an issue, please comment on it so that all of us know that you’re on it.
+
+If you’re looking to add a new feature, [raise a new issue](https://github.com/paralus/relay/issues/new) and start a discussion with the community. Engage with the maintainers of the project and work your way through.
+
 # Paralus relay-server / relay-agent
 
 Relay server and agent for kubectl access.
@@ -114,17 +127,8 @@ export RELAY_CONNECTOR_TOKEN=bqfvhabipt3a2g469870
 export RELAY_LISTENIP=127.0.10.1
 ```
 
-## Community & Support
+## Need Help?
 
-- Visit [Paralus website](https://paralus.io) for the complete documentation and helpful links.
-- Join our [Slack channel](https://join.slack.com/t/paralus/shared_invite/zt-1a9x6y729-ySmAq~I3tjclEG7nDoXB0A) to post your queries and discuss features.
-- Tweet to [@paralus_](https://twitter.com/paralus_/) on Twitter.
-- Create [GitHub Issues](https://github.com/paralus/relay/issues) to report bugs or request features.
+If you are interested to contribute to prompt but are stuck with any of the steps, feel free to reach out to us. Please [create an issue](https://github.com/paralus/relay/issues/new) in this repository describing your issue and we'll take it up from there.
 
-## Contributing
-
-The easiest way to start is to look at existing issues and see if there’s something there that you’d like to work on. You can filter issues with the label “Good first issue” which are relatively self sufficient issues and great for first time contributors.
-
-Once you decide on an issue, please comment on it so that all of us know that you’re on it.
-
-If you’re looking to add a new feature, raise a [new issue](https://github.com/paralus/relay/issues) and start a discussion with the community. Engage with the maintainers of the project and work your way through.
+You can reach out to us via our [Slack Channel](https://join.slack.com/t/paralus/shared_invite/zt-1a9x6y729-ySmAq~I3tjclEG7nDoXB0A) or [Twitter](https://twitter.com/paralus_).
