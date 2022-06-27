@@ -595,7 +595,7 @@ func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, l
 
 		paralusUserName = r.Header.Get("X-Paralus-User")
 		clusterServerName = r.Header.Get("X-Paralus-Cluster-ServerName")
-		clusterID = r.Header.Get("X-Paralus-Cluster-ID")
+		clusterID = utils.SanitizeValues(r.Header.Get("X-Paralus-Cluster-ID"))
 		issDateSecStr := r.Header.Get("X-Paralus-User-Cert-Issued")
 		if issDateSecStr == "" {
 			srvlog.Error(
