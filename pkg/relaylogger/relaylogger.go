@@ -3,6 +3,7 @@ package relaylogger
 import (
 	"bytes"
 	"fmt"
+	"strings"
 
 	"github.com/paralus/paralus/pkg/log"
 	"go.uber.org/zap"
@@ -47,17 +48,18 @@ func (l *RelayLog) relaylog(level int, msg string, kvs ...interface{}) {
 	}
 
 	fmt.Fprintf(&buf, "\n")
+	sanitizedValue := sanitizeValues(buf.String())
 	switch level {
 	case 0:
-		rlog.Panicw(buf.String())
+		rlog.Panicw(sanitizedValue)
 	case 1:
-		rlog.Errorw(buf.String())
+		rlog.Errorw(sanitizedValue)
 	case 2:
-		rlog.Warnw(buf.String())
+		rlog.Warnw(sanitizedValue)
 	case 3:
-		rlog.Infow(buf.String())
+		rlog.Infow(sanitizedValue)
 	case 4:
-		rlog.Debugw(buf.String())
+		rlog.Debugw(sanitizedValue)
 	}
 
 }
@@ -142,4 +144,9 @@ func NewLogger(level int) *RelayLog {
 func SetRunTimeLogLevel(level int) {
 	fmt.Println("log level changed from ", runLevel, " to ", level)
 	runLevel = level
+}
+
+func sanitizeValues(input string) string {
+	sanitisedValue := strings.Replace(input, "\n", "", -1)
+	return strings.Replace(sanitisedValue, "\r", "", -1)
 }

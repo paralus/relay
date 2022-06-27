@@ -711,3 +711,8 @@ func CheckPeerHeaders(h http.Header) bool {
 
 	return false
 }
+
+func SanitizeValues(input string) string {
+	sanitisedValue := strings.Replace(input, "\n", "", -1)
+	return strings.Replace(sanitisedValue, "\r", "", -1)
+}

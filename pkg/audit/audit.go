@@ -6,6 +6,7 @@ import (
 
 	"github.com/felixge/httpsnoop"
 	"github.com/paralus/relay/pkg/sessions"
+	"github.com/paralus/relay/pkg/utils"
 	"github.com/rs/xid"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -62,8 +63,8 @@ func (a *audit) handler(next http.Handler) http.Handler {
 		fields := make([]zapcore.Field, 0, 10)
 		fields = append(fields, zap.String("xid", xid.New().String()))
 		fields = append(fields, zap.String("method", r.Method))
-		fields = append(fields, zap.String("url", r.URL.EscapedPath()))
-		fields = append(fields, zap.String("query", r.URL.RawQuery))
+		fields = append(fields, zap.String("url", utils.SanitizeValues(r.URL.EscapedPath())))
+		fields = append(fields, zap.String("query", utils.SanitizeValues(r.URL.RawQuery)))
 		fields = append(fields, zap.String("serverName", r.TLS.ServerName))
 		fields = append(fields, zap.String("user", r.TLS.PeerCertificates[0].Subject.CommonName))
 		fields = append(fields, zap.String("remoteAddr", strings.Split(r.RemoteAddr, ":")[0]))

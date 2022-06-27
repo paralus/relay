@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/x509/pkix"
 	"fmt"
+	"html"
 	"net"
 	"net/http"
 	"strconv"
@@ -880,7 +881,7 @@ func setLoglevel(w http.ResponseWriter, r *http.Request) {
 
 	relaylogger.SetRunTimeLogLevel(lvl)
 
-	fmt.Fprintf(w, "Success: set loglevel to "+level)
+	fmt.Fprintf(w, "Success: set loglevel to "+html.EscapeString(level))
 }
 
 func healthCheck(w http.ResponseWriter, r *http.Request) {
