@@ -5,11 +5,11 @@ DEV_TAG := docker.io/${DEV_USER}/relay:$(TS)
 
 .PHONY: tidy
 tidy:
-	GOPRIVATE=github.com/paralus/* go mod tidy
+	go mod tidy
 
 .PHONY: vendor
 vendor:
-	GOPROXY=direct GOPRIVATE=github.com/paralus/* go mod vendor
+	GOPROXY=direct go mod vendor
 
 check:
 	go fmt ./...
