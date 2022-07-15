@@ -281,21 +281,6 @@ func (p *authzProvisioner) provisionAuthz(ctx context.Context, auth *sentryrpc.G
 		return err
 	}
 
-	for _, namespace := range auth.Namespaces {
-		ns, _, err := runtime.ToUnstructuredObject(namespace)
-		if err != nil {
-			_log.Infow("unable to make namespace runtime object", "error", err)
-			return err
-		}
-
-		err = applier.Apply(ctx, ns)
-		// Ignore already exist error
-		if err != nil && !strings.Contains(err.Error(), "already exists") {
-			_log.Infow("unable to apply namespace", "error", err)
-			return err
-		}
-	}
-
 	for _, clusterRole := range auth.ClusterRoles {
 		cro, _, err := runtime.ToUnstructuredObject(clusterRole)
 		if err != nil {
