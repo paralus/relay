@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 ### Added
 ### Changed
+- Removed building images to registry on pull requests [niravparikh05](https://github.com/niravparikh05)
 ### Fixed
 
 ## [0.1.0] - 2022-06-22
