@@ -209,7 +209,7 @@ func setupserver(log *relaylogger.RelayLog) error {
 		}
 		q, _ := strconv.ParseInt(port, 10, 64)
 		if q > 0 && q <= math.MaxInt32 {
-			utils.RelayConnectorPort = int(p)
+			utils.RelayConnectorPort = int(q)
 		}
 		if err != nil {
 			log.Error(
