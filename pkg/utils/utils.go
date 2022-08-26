@@ -215,7 +215,7 @@ var (
 	RelayUserCACert []byte
 
 	//RelayUserPort user facing seerver port
-	RelayUserPort int
+	RelayUserPort int32
 	// RelayUserHost user facing seerver host (domain)
 	RelayUserHost string
 	//RelayConnectorCert used for relay-connector termination
@@ -227,7 +227,7 @@ var (
 	// RelayConnectorHost connector facing server host (domain)
 	RelayConnectorHost string
 	// RelayConnectorPort connector facing server port
-	RelayConnectorPort int
+	RelayConnectorPort int32
 
 	// CDRelayUserCert used for client/peer communication
 	CDRelayUserCert []byte
@@ -532,7 +532,7 @@ func GetRelayIP() string {
 // GetRelayIPPort get relay IP:PORT of user facing server
 func GetRelayIPPort() string {
 	if RelayIPFromConfig == "" {
-		return GetRelayIP() + ":" + strconv.Itoa(RelayUserPort)
+		return GetRelayIP() + ":" + strconv.Itoa(int(RelayUserPort))
 	}
 	return RelayIPFromConfig
 }

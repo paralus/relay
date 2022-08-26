@@ -5,6 +5,7 @@ import (
 	"crypto/x509/pkix"
 	"fmt"
 	"html"
+	"math"
 	"net"
 	"net/http"
 	"strconv"
@@ -184,7 +185,10 @@ func setupserver(log *relaylogger.RelayLog) error {
 			)
 			return fmt.Errorf("relay server failed in setupserver")
 		}
-		utils.RelayUserPort, err = strconv.Atoi(port)
+		p, _ := strconv.ParseInt(port, 10, 64)
+		if p > 0 && p <= math.MaxInt32 {
+			utils.RelayUserPort = int32(p)
+		}
 		if err != nil {
 			log.Error(
 				err,
@@ -203,7 +207,10 @@ func setupserver(log *relaylogger.RelayLog) error {
 			)
 			return fmt.Errorf("relay server failed in setupserver")
 		}
-		utils.RelayConnectorPort, err = strconv.Atoi(port)
+		q, _ := strconv.ParseInt(port, 10, 64)
+		if q > 0 && q <= math.MaxInt32 {
+			utils.RelayConnectorPort = int32(q)
+		}
 		if err != nil {
 			log.Error(
 				err,
@@ -533,7 +540,7 @@ func registerCDRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) e
 	utils.CDRelayUserCert = cfg.Certificate
 	utils.CDRelayUserKey = cfg.PrivateKey
 	utils.CDRelayUserCACert = cfg.CACertificate
-	utils.CDRelayUserPort = cfg.ServerPort
+	utils.CDRelayUserPort = int(cfg.ServerPort)
 	utils.CDRelayUserHost = cfg.ServerHost
 
 	return nil
@@ -631,7 +638,7 @@ func registerCDRelayConnectorServer(ctx context.Context, log *relaylogger.RelayL
 	utils.CDRelayConnectorKey = cfg.PrivateKey
 	utils.CDRelayConnectorCACert = cfg.CACertificate
 	utils.CDRelayConnectorHost = cfg.ServerHost
-	utils.CDRelayConnectorPort = cfg.ServerPort
+	utils.CDRelayConnectorPort = int(cfg.ServerPort)
 
 	return nil
 }
