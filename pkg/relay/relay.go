@@ -5,6 +5,7 @@ import (
 	"crypto/x509/pkix"
 	"fmt"
 	"html"
+	"math"
 	"net"
 	"net/http"
 	"strconv"
@@ -468,7 +469,9 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayUserHost
-		cfg.ServerPort = int32(utils.RelayUserPort)
+		if utils.RelayUserPort > 0 && utils.RelayUserPort <= math.MaxInt32 {
+			cfg.ServerPort = int32(utils.RelayUserPort)
+		}
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay user server bootstrap")
@@ -564,7 +567,9 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayConnectorHost
-		cfg.ServerPort = int32(utils.RelayConnectorPort)
+		if utils.RelayConnectorPort > 0 && utils.RelayConnectorPort <= math.MaxInt32 {
+			cfg.ServerPort = int32(utils.RelayConnectorPort)
+		}
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay connector server bootstrap")
