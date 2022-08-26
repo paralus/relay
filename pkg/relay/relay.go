@@ -187,7 +187,7 @@ func setupserver(log *relaylogger.RelayLog) error {
 		}
 		p, _ := strconv.ParseInt(port, 10, 64)
 		if p > 0 && p <= math.MaxInt32 {
-			utils.RelayUserPort = int(p)
+			utils.RelayUserPort = int32(p)
 		}
 		if err != nil {
 			log.Error(
@@ -209,7 +209,7 @@ func setupserver(log *relaylogger.RelayLog) error {
 		}
 		q, _ := strconv.ParseInt(port, 10, 64)
 		if q > 0 && q <= math.MaxInt32 {
-			utils.RelayConnectorPort = int(q)
+			utils.RelayConnectorPort = int32(q)
 		}
 		if err != nil {
 			log.Error(
@@ -475,7 +475,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayUserHost
-		cfg.ServerPort = int32(utils.RelayUserPort)
+		cfg.ServerPort = utils.RelayUserPort
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay user server bootstrap")
@@ -502,7 +502,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 	utils.RelayUserCert = cfg.Certificate
 	utils.RelayUserKey = cfg.PrivateKey
 	utils.RelayUserCACert = cfg.CACertificate
-	utils.RelayUserPort = int(cfg.ServerPort)
+	utils.RelayUserPort = cfg.ServerPort
 	utils.RelayUserHost = cfg.ServerHost
 
 	return nil
@@ -571,7 +571,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayConnectorHost
-		cfg.ServerPort = int32(utils.RelayConnectorPort)
+		cfg.ServerPort = utils.RelayConnectorPort
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay connector server bootstrap")
@@ -600,7 +600,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 	utils.RelayConnectorKey = cfg.PrivateKey
 	utils.RelayConnectorCACert = cfg.CACertificate
 	utils.RelayConnectorHost = cfg.ServerHost
-	utils.RelayConnectorPort = int(cfg.ServerPort)
+	utils.RelayConnectorPort = cfg.ServerPort
 
 	return nil
 }
