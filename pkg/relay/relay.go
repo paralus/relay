@@ -468,7 +468,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayUserHost
-		cfg.ServerPort = utils.RelayUserPort
+		cfg.ServerPort = int32(utils.RelayUserPort)
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay user server bootstrap")
@@ -495,7 +495,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 	utils.RelayUserCert = cfg.Certificate
 	utils.RelayUserKey = cfg.PrivateKey
 	utils.RelayUserCACert = cfg.CACertificate
-	utils.RelayUserPort = cfg.ServerPort
+	utils.RelayUserPort = int(cfg.ServerPort)
 	utils.RelayUserHost = cfg.ServerHost
 
 	return nil
@@ -533,7 +533,7 @@ func registerCDRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) e
 	utils.CDRelayUserCert = cfg.Certificate
 	utils.CDRelayUserKey = cfg.PrivateKey
 	utils.CDRelayUserCACert = cfg.CACertificate
-	utils.CDRelayUserPort = cfg.ServerPort
+	utils.CDRelayUserPort = int(cfg.ServerPort)
 	utils.CDRelayUserHost = cfg.ServerHost
 
 	return nil
@@ -564,7 +564,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayConnectorHost
-		cfg.ServerPort = utils.RelayConnectorPort
+		cfg.ServerPort = int32(utils.RelayConnectorPort)
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay connector server bootstrap")
@@ -593,7 +593,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 	utils.RelayConnectorKey = cfg.PrivateKey
 	utils.RelayConnectorCACert = cfg.CACertificate
 	utils.RelayConnectorHost = cfg.ServerHost
-	utils.RelayConnectorPort = cfg.ServerPort
+	utils.RelayConnectorPort = int(cfg.ServerPort)
 
 	return nil
 }
@@ -631,7 +631,7 @@ func registerCDRelayConnectorServer(ctx context.Context, log *relaylogger.RelayL
 	utils.CDRelayConnectorKey = cfg.PrivateKey
 	utils.CDRelayConnectorCACert = cfg.CACertificate
 	utils.CDRelayConnectorHost = cfg.ServerHost
-	utils.CDRelayConnectorPort = cfg.ServerPort
+	utils.CDRelayConnectorPort = int(cfg.ServerPort)
 
 	return nil
 }

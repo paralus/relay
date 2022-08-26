@@ -196,7 +196,7 @@ func (p *authzProvisioner) getAuthz(ctx context.Context, userCN, sni string, cer
 	}
 	defer conn.Close()
 
-	client := sentryrpc.NewClusterAuthorizationClient(conn)
+	client := sentryrpc.NewClusterAuthorizationServiceClient(conn)
 
 	resp, err := client.GetUserAuthorization(ctx, &sentryrpc.GetUserAuthorizationRequest{
 		UserCN:           userCN,

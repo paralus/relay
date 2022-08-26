@@ -12,7 +12,7 @@ require (
 	github.com/inconshreveable/go-vhost v0.0.0-20160627193104-06d84117953b
 	github.com/jinzhu/inflection v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/paralus/paralus v0.0.0-20220610083417-845812b5f7f2
+	github.com/paralus/paralus v0.1.3-0.20220826052930-27805eb460bd
 	github.com/rs/xid v1.3.0
 	github.com/segmentio/encoding v0.3.4
 	github.com/spf13/pflag v1.0.5
