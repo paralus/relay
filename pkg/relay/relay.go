@@ -185,7 +185,10 @@ func setupserver(log *relaylogger.RelayLog) error {
 			)
 			return fmt.Errorf("relay server failed in setupserver")
 		}
-		utils.RelayUserPort, err = strconv.Atoi(port)
+		p, _ := strconv.ParseInt(port, 10, 64)
+		if p > 0 && p <= math.MaxInt32 {
+			utils.RelayUserPort = int(p)
+		}
 		if err != nil {
 			log.Error(
 				err,
@@ -204,7 +207,10 @@ func setupserver(log *relaylogger.RelayLog) error {
 			)
 			return fmt.Errorf("relay server failed in setupserver")
 		}
-		utils.RelayConnectorPort, err = strconv.Atoi(port)
+		q, _ := strconv.ParseInt(port, 10, 64)
+		if q > 0 && q <= math.MaxInt32 {
+			utils.RelayConnectorPort = int(p)
+		}
 		if err != nil {
 			log.Error(
 				err,
@@ -469,9 +475,7 @@ func registerRelayUserServer(ctx context.Context, log *relaylogger.RelayLog) err
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayUserHost
-		if utils.RelayUserPort > 0 && utils.RelayUserPort <= math.MaxInt32 {
-			cfg.ServerPort = int32(utils.RelayUserPort)
-		}
+		cfg.ServerPort = int32(utils.RelayUserPort)
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay user server bootstrap")
@@ -567,9 +571,7 @@ func registerRelayConnectorServer(ctx context.Context, log *relaylogger.RelayLog
 		}
 		// this is a server certificate CN is same as ServerHost
 		cfg.ServerHost = utils.RelayConnectorHost
-		if utils.RelayConnectorPort > 0 && utils.RelayConnectorPort <= math.MaxInt32 {
-			cfg.ServerPort = int32(utils.RelayConnectorPort)
-		}
+		cfg.ServerPort = int32(utils.RelayConnectorPort)
 		err := prepareConfigCSRForBootStrapOutSideCore(cfg, cfg.ServerHost, log)
 		if err != nil {
 			return fmt.Errorf("failed in config csr for relay connector server bootstrap")
