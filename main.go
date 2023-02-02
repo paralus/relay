@@ -36,7 +36,7 @@ func terminate(cancel context.CancelFunc) {
 	os.Exit(1)
 }
 
-//os signal handler
+// os signal handler
 func signalHandler(sig os.Signal, cancel context.CancelFunc) {
 	if sig == syscall.SIGINT || sig == syscall.SIGKILL || sig == syscall.SIGTERM || sig == syscall.SIGQUIT {
 		log.Error(
