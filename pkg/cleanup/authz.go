@@ -21,13 +21,12 @@ var (
 
 const (
 	// how often should the cleanup routine run
-	sweepInterval = time.Minute * 10
-	// any authz which is olderThan this should be cleaned up
-	olderThan = time.Hour * 8
+	sweepInterval = time.Minute * 5
 
 	paralusRelayLabel = "paralus-relay"
 	authzRefreshLabel = "authz-refreshed"
 	paralusSystemNS   = "paralus-system"
+	authzExpiryLabel  = "authz-expiry"
 
 	maxResults = 50
 )
@@ -42,9 +41,9 @@ func getMatchingLabelSelector() (sel client.MatchingLabelsSelector, err error) {
 	}
 
 	refreshLabelReq, err = labels.NewRequirement(
-		authzRefreshLabel,
+		authzExpiryLabel,
 		selection.LessThan,
-		[]string{strconv.FormatInt(time.Now().Add(-olderThan).Unix(), 10)},
+		[]string{strconv.FormatInt(time.Now().Unix(), 10)},
 	)
 	if err != nil {
 		_log.Infow("unable to create authz refresh requirment", "error", err)
