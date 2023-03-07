@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -355,6 +356,9 @@ func registerRelayAgent(ctx context.Context, rn utils.Relaynetwork) error {
 			err,
 			"failed to register relay agent",
 		)
+		if strings.Contains(err.Error(), "multiple agent register requests") {
+			utils.TerminateChan <- true
+		}
 		return err
 	}
 
