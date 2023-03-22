@@ -77,7 +77,7 @@ require (
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
-	github.com/ory/kratos-client-go v0.8.2-alpha.1 // indirect
+	github.com/ory/kratos-client-go v0.10.1 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/processout/grpc-go-pool v1.2.1 // indirect

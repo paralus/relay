@@ -640,8 +640,9 @@ github.com/onsi/gomega v1.17.0/go.mod h1:HnhC7FXeEQY45zxNK3PPoIUhzk/80Xly9PcubAl
 github.com/opentracing/opentracing-go v1.1.0/go.mod h1:UkNAQd3GIcIGf0SeVgPpRdFStlNbqXla1AfSYxPUl2o=
 github.com/opentracing/opentracing-go v1.2.0 h1:uEJPy/1a5RIPAJ0Ov+OIO8OxWu77jEv+1B0VhjKrZUs=
 github.com/opentracing/opentracing-go v1.2.0/go.mod h1:GxEUsuufX4nBwe+T+Wl9TAgYrxe9dPLANfrWvHYVTgc=
-github.com/ory/kratos-client-go v0.8.2-alpha.1 h1:YlKhGOSZjounlB9iY4xSWlqHbyLYkeLzlLk8ZL7/nEM=
 github.com/ory/kratos-client-go v0.8.2-alpha.1/go.mod h1:dOQIsar76K07wMPJD/6aMhrWyY+sFGEagLDLso1CpsA=
+github.com/ory/kratos-client-go v0.10.1 h1:kSRk+0leCJ1nPMS+FPho8b9WMzrKNpgszvta0Xo32QU=
+github.com/ory/kratos-client-go v0.10.1/go.mod h1:dOQIsar76K07wMPJD/6aMhrWyY+sFGEagLDLso1CpsA=
 github.com/paralus/paralus v0.1.3-0.20220826052930-27805eb460bd h1:mm+Y7BdLBx//AyMNGghx6IeCjP5fCy+N/2qqu1ymJlg=
 github.com/paralus/paralus v0.1.3-0.20220826052930-27805eb460bd/go.mod h1:L2m3kVIXTx738VO+YV474WNAiKOnoy32yRbmmYZxlPw=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=

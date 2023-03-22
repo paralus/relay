@@ -46,13 +46,13 @@ const (
 	CDAGENTCORE      = "paralus-core-cd-relay-agent"
 )
 
-//SNICertificate sni based certs
+// SNICertificate sni based certs
 type SNICertificate struct {
 	CertFile []byte
 	KeyFile  []byte
 }
 
-//Relaynetwork configmap data
+// Relaynetwork configmap data
 type Relaynetwork struct {
 	Token         string `json:"token"`         // bootstrap agent token
 	Addr          string `json:"addr"`          // bootstrap register host
@@ -62,7 +62,7 @@ type Relaynetwork struct {
 	Upstream      string `json:"upstream"`      // upstream tcp service host:port
 }
 
-//RelayNetworkConfig config for relay agent
+// RelayNetworkConfig config for relay agent
 type RelayNetworkConfig struct {
 	// Network configmap
 	Network Relaynetwork
@@ -284,9 +284,12 @@ var (
 
 	// HealingInterval time to close idle scaled connection
 	HealingInterval = 24 // Hour
+
+	// Fingerprint uuid of the agent namespace which acts as relay agent fingerprint
+	Fingerprint string
 )
 
-//CountWriter to measure bytes
+// CountWriter to measure bytes
 type CountWriter struct {
 	W     io.Writer
 	Count int64
@@ -324,7 +327,7 @@ type ProxyConfig struct {
 	Version            string
 }
 
-//ProxyProtocolMessage used across dialin unix socket
+// ProxyProtocolMessage used across dialin unix socket
 type ProxyProtocolMessage struct {
 	DialinKey string
 	UserName  string
@@ -339,17 +342,17 @@ type ServiceAccountCacheObject struct {
 	Key                  string
 }
 
-//OnEvict cache on eviction call back function
+// OnEvict cache on eviction call back function
 type OnEvict = func(item *ristretto.Item)
 
-//Fatal to exit the program
+// Fatal to exit the program
 func Fatal(format string, a ...interface{}) {
 	fmt.Fprintf(os.Stderr, format, a...)
 	fmt.Fprint(os.Stderr, "\n")
 	os.Exit(1)
 }
 
-//CloneHeader clone http headers
+// CloneHeader clone http headers
 func CloneHeader(h http.Header) http.Header {
 	h2 := make(http.Header, len(h))
 	for k, vv := range h {
@@ -360,7 +363,7 @@ func CloneHeader(h http.Header) http.Header {
 	return h2
 }
 
-//SetXForwardedFor ...
+// SetXForwardedFor ...
 func SetXForwardedFor(h http.Header, remoteAddr string) {
 	clientIP, _, err := net.SplitHostPort(remoteAddr)
 	if err == nil {
@@ -374,7 +377,7 @@ func SetXForwardedFor(h http.Header, remoteAddr string) {
 	}
 }
 
-//SetXRAYUUID ...
+// SetXRAYUUID ...
 func SetXRAYUUID(h http.Header) {
 	var reluuid string
 
@@ -388,7 +391,7 @@ func SetXRAYUUID(h http.Header) {
 	h.Set("X-Paralus-XRAY-RELAYUUID", reluuid)
 }
 
-//SetXForwardedParalus set paralus headers
+// SetXForwardedParalus set paralus headers
 func SetXForwardedParalus(h http.Header, msg *ControlMessage) {
 	h.Set("X-Paralus-User", msg.ParalusUserName)
 	h.Set("X-Paralus-Namespace", msg.ParalusNamespace)
@@ -396,7 +399,7 @@ func SetXForwardedParalus(h http.Header, msg *ControlMessage) {
 	h.Set("X-Paralus-Allow", msg.ParalusAllow)
 }
 
-//UnSetXForwardedParalus set paralus headers
+// UnSetXForwardedParalus set paralus headers
 func UnSetXForwardedParalus(h http.Header) {
 	h.Del("X-Paralus-Scope")
 	h.Del("X-Paralus-Allow")
@@ -411,7 +414,7 @@ func UnSetXForwardedParalus(h http.Header) {
 	h.Del("X-Paralus-User-Cert-Issued")
 }
 
-//Transfer transfer by io.Copy
+// Transfer transfer by io.Copy
 func Transfer(dst io.Writer, src io.Reader, tlog *relaylogger.RelayLog, direction string) {
 	n, err := io.Copy(dst, src)
 	if err != nil {
@@ -448,7 +451,7 @@ func (cw *CountWriter) Write(p []byte) (n int, err error) {
 	return
 }
 
-//CopyHeader copy header
+// CopyHeader copy header
 func CopyHeader(dst, src http.Header) {
 	for k, v := range src {
 		vv := make([]string, len(v))
@@ -489,7 +492,7 @@ func ReadControlMessage(r *http.Request) (*ControlMessage, error) {
 	return &msg, nil
 }
 
-//FlushWriter flush writer
+// FlushWriter flush writer
 type FlushWriter struct {
 	W io.Writer
 }
@@ -502,18 +505,18 @@ func (fw FlushWriter) Write(p []byte) (n int, err error) {
 	return
 }
 
-//KeepAlive set keepalive
+// KeepAlive set keepalive
 func KeepAlive(conn net.Conn) error {
 	return tcpkeepalive.SetKeepAlive(conn, DefaultKeepAliveIdleTime, DefaultKeepAliveCount, DefaultKeepAliveInterval)
 }
 
-//GenUUID generates a google UUID
+// GenUUID generates a google UUID
 func GenUUID() {
 	id := uuid.New()
 	RelayUUID = id.String()
 }
 
-//GetRelayIP get relay IP address
+// GetRelayIP get relay IP address
 func GetRelayIP() string {
 	if RelayIPFromConfig == "" {
 		name, err := os.Hostname()
@@ -537,7 +540,7 @@ func GetRelayIPPort() string {
 	return RelayIPFromConfig
 }
 
-//CheckRelayLoops :does XRAY UUDI already present in header?
+// CheckRelayLoops :does XRAY UUDI already present in header?
 func CheckRelayLoops(h http.Header) bool {
 	if uuidHdr, ok := h["X-Paralus-XRAY-RELAYUUID"]; ok {
 		allIds := strings.Join(uuidHdr, ", ")
@@ -577,7 +580,7 @@ func DeleteCache(cache *ristretto.Cache, key interface{}) {
 	cache.Del(key)
 }
 
-//WriteFile overwrite if exist
+// WriteFile overwrite if exist
 func WriteFile(filename, data string) error {
 	file, err := os.Create(filename)
 	if err != nil {
