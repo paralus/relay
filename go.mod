@@ -127,3 +127,5 @@ require (
 	sigs.k8s.io/kustomize/pseudo/k8s v0.1.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.1 // indirect
 )
+
+replace golang.org/x/net => golang.org/x/net v0.0.0-20210825183410-e898025ed96a
