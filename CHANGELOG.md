@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Fixed
+-  Patch fix to pin golang.org/x/net to a specific version as it fixes intermittent relay connection failures from [niravparikh05](https://github.com/niravparikh05)
+
 ## [0.1.3] - 2023-02-24
 ### Added
 -  Configure the SA account lifetime from [mabhi](https://github.com/mabhi)
