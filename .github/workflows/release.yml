@@ -34,7 +34,7 @@ jobs:
           go-version: ${{ matrix.go-version }}
 
       - name: vendor packages
-        run: go mod tidy && go mod vendor
+        run: go mod tidy -compat=1.17 && go mod vendor
 
       # # Sanity check before publishing
       # - name: Test all
