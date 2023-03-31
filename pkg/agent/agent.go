@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/fsnotify/fsnotify"
@@ -85,6 +86,19 @@ func getConfigMap(ctx context.Context, c client.Client, name string) (*corev1.Co
 	return &cm, nil
 }
 
+func getNamespace(ctx context.Context, c client.Client, name string) (*corev1.Namespace, error) {
+	ns := corev1.Namespace{}
+
+	err := c.Get(ctx, client.ObjectKey{
+		Name: name,
+	}, &ns)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ns, nil
+}
+
 func getConfigHash(ctx context.Context, configMap string) (string, error) {
 
 	cm, err := getConfigMap(ctx, applier, configMap)
@@ -146,6 +160,24 @@ func getRelayAgentConfig(ctx context.Context) error {
 	return nil
 }
 
+func setAgentFingerprint(ctx context.Context) error {
+	ns, err := getNamespace(ctx, applier, paralusSystemNamespace)
+	if err != nil {
+		return err
+	}
+
+	fingerprint := ns.UID
+
+	log.Info(
+		"relay agent",
+		"namespace", paralusSystemNamespace,
+		"fingerprint", fingerprint,
+	)
+
+	utils.Fingerprint = string(fingerprint)
+	return nil
+}
+
 func setupclient(ctx context.Context, log *relaylogger.RelayLog) error {
 	configName = "relay-agent-config"
 	viper.SetDefault(podNameEnv, "relay-agent")
@@ -195,6 +227,16 @@ func setupclient(ctx context.Context, log *relaylogger.RelayLog) error {
 		)
 		return err
 	}
+
+	err = setAgentFingerprint(ctx)
+	if err != nil {
+		log.Error(
+			err,
+			"failed to set cluster fingerprint",
+		)
+		return err
+	}
+
 	return nil
 }
 
@@ -342,6 +384,7 @@ func registerRelayAgent(ctx context.Context, rn utils.Relaynetwork) error {
 		ClientID:      rn.Token,
 		ClientIP:      utils.GetRelayIP(),
 		Name:          podName,
+		Fingerprint:   utils.Fingerprint,
 	}
 
 	if utils.IsHTTPS(rn.Addr) {
@@ -355,6 +398,9 @@ func registerRelayAgent(ctx context.Context, rn utils.Relaynetwork) error {
 			err,
 			"failed to register relay agent",
 		)
+		if strings.Contains(err.Error(), "fingerprint mismatch") {
+			utils.TerminateChan <- true
+		}
 		return err
 	}
 
