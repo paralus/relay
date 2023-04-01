@@ -6,15 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  GOPRIVATE: https://github.com/paralus
-
 jobs:
 
   test:
     strategy:
       matrix:
-        go-version: [1.17.x]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -23,14 +19,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ matrix.go-version }}
+          # Getting go version from the go.mod file
+          go-version-file: 'go.mod'
 
-      - name: Format
+      - run: go version
+
+      - name: Check code format
         run: if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
-
-      - name: Granting private modules access
-        run: |
-          git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/paralus".insteadOf "https://github.com/paralus"
 
       - name: Test all
         run: go test -v ./...
@@ -38,7 +33,6 @@ jobs:
   # golangci:
   #   strategy:
   #     matrix:
-  #       go-version: [1.17.x]
   #       os: [ubuntu-latest]
   #   runs-on: ${{ matrix.os }}
   #   steps:
@@ -47,11 +41,10 @@ jobs:
   #     - name: Set up Go
   #       uses: actions/setup-go@v4
   #       with:
-  #         go-version: ${{ matrix.go-version }}
+  #         # Getting go version from the go.mod file
+  #         go-version-file: 'go.mod'
 
-  #     - name: Granting private modules access
-  #       run: |
-  #         git config --global url."https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/paralus".insteadOf "https://github.com/paralus"
+  #     - run: go version
 
   #     - name: golangci-lint
   #       uses: golangci/golangci-lint-action@v2
