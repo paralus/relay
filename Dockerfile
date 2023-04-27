@@ -1,16 +1,23 @@
 FROM golang:1.17 as build
 LABEL description="Build container"
 
-ENV CGO_ENABLED 0
-COPY . /build
 WORKDIR /build
+ENV CGO_ENABLED 0
+
+# Download necessary Go modules
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+COPY . .
 RUN go build -ldflags "-s" github.com/paralus/relay
 
 FROM alpine:latest as runtime
 LABEL description="Run container"
 
-COPY --from=build /build/relay /usr/bin/relay
 WORKDIR /usr/bin
+COPY --from=build /build/relay /usr/bin/relay
+
 ENTRYPOINT ["./relay"]
 CMD ["--help"]
 
