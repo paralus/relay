@@ -28,6 +28,9 @@ jobs:
 
       - run: go version
 
+      - name: vendor packages
+        run: go mod tidy && go mod vendor
+
       # Sanity check before publishing
       - name: Test all
         run: go test -v ./...
