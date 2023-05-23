@@ -11,7 +11,6 @@ on:
 env:
   REGISTRY: docker.io
   IMAGE_NAME: paralusio/relay
-  TAG: latest
 
 jobs:
 
@@ -32,9 +31,6 @@ jobs:
           go-version-file: 'go.mod'
 
       - run: go version
-
-      - name: vendor packages
-        run: go mod tidy && go mod vendor
 
       # Sanity check before publishing
       - name: Test all
@@ -59,12 +55,12 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.10.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
