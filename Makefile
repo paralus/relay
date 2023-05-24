@@ -31,3 +31,8 @@ build-dev:
 	upx -5 -o relay.upx relay.dev	
 	docker build -f Dockerfile.dev -t ${IMG} .
 	$(MAKE) tag-dev
+
+## changelog: generate changelog (latest release)
+.PHONY: changelog
+changelog:
+	conventional-changelog -i CHANGELOG.md -s -p conventionalcommits

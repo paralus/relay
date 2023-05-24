@@ -1,14 +1,12 @@
-# Changelog
+## [](https://github.com/paralus/relay/compare/v0.1.4...v) (2023-05-24)
 
-All notable changes to this project will be documented in this file.
+### [0.1.4](https://github.com/paralus/relay/compare/v0.1.3...v0.1.4) (2023-03-31)
 
-## Unreleased
 
-## [0.1.4] - 2023-03-31
+### Bug Fixes
 
-### Fixed
--  Patch fix to pin golang.org/x/net to a specific version as it fixes intermittent relay connection failures from [niravparikh05](https://github.com/niravparikh05)
-- Restrict bootstrapping different target clusters using same bootstrap yaml from [niravparikh05](https://github.com/niravparikh05)
+* intermittent relay connection failures ([#48](https://github.com/paralus/relay/issues/48)) ([5fde31a](https://github.com/paralus/relay/commit/5fde31aa17545ba3d2e917a5668ac2615ccac997))
+* same bootstrap register requests from diff target clusters ([#47](https://github.com/paralus/relay/issues/47)) ([cdf6f39](https://github.com/paralus/relay/commit/cdf6f39fa7ffed06bf84b6702f168c78a537cf70))
 
 ## [0.1.3] - 2023-02-24
 ### Added
