@@ -19,7 +19,7 @@ import (
 	"golang.org/x/net/http2"
 )
 
-//ClientConfig ..
+// ClientConfig ..
 type ClientConfig struct {
 	//ServiceName name of the service
 	ServiceName string
@@ -42,7 +42,7 @@ type ClientConfig struct {
 	Logger *relaylogger.RelayLog
 }
 
-//Client struct
+// Client struct
 type Client struct {
 	sync.Mutex
 	conn               net.Conn
@@ -75,7 +75,7 @@ func expBackoff(c BackoffConfig) *backoff.ExponentialBackOff {
 	return b
 }
 
-//loadNewRelayNetwork start the relay agent for a given network
+// loadNewRelayNetwork start the relay agent for a given network
 func loadNewRelayNetwork(ctx context.Context, rnc utils.RelayNetworkConfig) error {
 	var spxy proxy.Func
 	var tlsconf *tls.Config
@@ -235,7 +235,7 @@ func (c *Client) runClient(ctx context.Context) {
 	}
 }
 
-//Start relay client
+// Start relay client
 func (c *Client) Start(ctx context.Context) error {
 	cw := make(chan bool)
 
@@ -356,7 +356,7 @@ func (c *Client) processDialoutProxy(conn net.Conn, network, addr string) error 
 	return nil
 }
 
-//dialout connect
+// dialout connect
 func (c *Client) connect() (net.Conn, error) {
 	c.Lock()
 	defer c.Unlock()
@@ -374,7 +374,7 @@ func (c *Client) connect() (net.Conn, error) {
 	return conn, nil
 }
 
-//dial
+// dial
 func (c *Client) dial() (net.Conn, error) {
 	var (
 		network   = "tcp"
@@ -413,7 +413,8 @@ func (c *Client) dial() (net.Conn, error) {
 				conn = nil
 			}
 
-			c.logger.Info(
+			c.logger.Error(
+				err,
 				"dial failed",
 				"network", network,
 				"addr", addr,
@@ -582,7 +583,7 @@ func (c *Client) handleHandshake(w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
-//setups the proxy func handler
+// setups the proxy func handler
 func clientProxy(svcName string, d *Dialout, logger *relaylogger.RelayLog) proxy.Func {
 	proxyCfg := &utils.ProxyConfig{
 		Protocol:           d.Protocol,
@@ -628,7 +629,7 @@ func clientProxy(svcName string, d *Dialout, logger *relaylogger.RelayLog) proxy
 	}
 }
 
-//StartClient starts relay clients
+// StartClient starts relay clients
 func StartClient(ctx context.Context, log *relaylogger.RelayLog, file string, rnc utils.RelayNetworkConfig, exitChan chan<- bool) {
 	clog = log.WithName("Client")
 
