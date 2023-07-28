@@ -11,7 +11,7 @@ import (
 	"github.com/twmb/murmur3"
 )
 
-//UserSession session cache
+// UserSession session cache
 type UserSession struct {
 	// Type of the server. Relay means user-facing
 	// Dialin means cluster-facing
@@ -70,7 +70,7 @@ var (
 
 var _dummyHandler = func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {}
 
-//InitUserSessionCache init user cache
+// InitUserSessionCache init user cache
 func InitUserSessionCache() error {
 	var err error
 	userSessions, err = ristretto.NewCache(&ristretto.Config{
@@ -85,10 +85,18 @@ func InitUserSessionCache() error {
 	roleCheck.Handle("GET", "/api/:version/namespaces/:namespace/secrets", _dummyHandler)
 	roleCheck.Handle("GET", "/api/:version/secrets", _dummyHandler)
 
+	roleCheck.Handle("POST", "/api/:version/namespaces/:namespace/secrets/*name", _dummyHandler)
+	roleCheck.Handle("GET", "/api/:version/namespaces/:namespace/secrets/*name", _dummyHandler)
+	roleCheck.Handle("GET", "/api/:version/secrets/*name", _dummyHandler)
+
 	roleCheckSecret = httprouter.New()
 	roleCheckSecret.Handle("POST", "/api/:version/namespaces/:namespace/secrets", _dummyHandler)
 	roleCheckSecret.Handle("GET", "/api/:version/namespaces/:namespace/secrets", _dummyHandler)
 	roleCheckSecret.Handle("GET", "/api/:version/secrets", _dummyHandler)
+
+	roleCheckSecret.Handle("POST", "/api/:version/namespaces/:namespace/secrets/*name", _dummyHandler)
+	roleCheckSecret.Handle("GET", "/api/:version/namespaces/:namespace/secrets/*name", _dummyHandler)
+	roleCheckSecret.Handle("GET", "/api/:version/secrets/*name", _dummyHandler)
 
 	return err
 }
@@ -105,7 +113,7 @@ func GetSecretRoleCheck(method, url string) bool {
 	return h != nil
 }
 
-//GetUserSession get the user session
+// GetUserSession get the user session
 func GetUserSession(skey string) (*UserSession, bool) {
 	hkey := getUserCacheKey(skey)
 	if val, ok := userSessions.Get(hkey); ok {
@@ -114,19 +122,19 @@ func GetUserSession(skey string) (*UserSession, bool) {
 	return nil, false
 }
 
-//AddUserSession add user session
+// AddUserSession add user session
 func AddUserSession(s *UserSession, skey string) {
 	hkey := getUserCacheKey(skey)
 	userSessions.SetWithTTL(hkey, s, 100, time.Minute*15)
 }
 
-//DeleteUserSession add user session
+// DeleteUserSession add user session
 func DeleteUserSession(skey string) {
 	hkey := getUserCacheKey(skey)
 	userSessions.Del(hkey)
 }
 
-//UpdateUserSessionExpiry set a short TTL when error happens
+// UpdateUserSessionExpiry set a short TTL when error happens
 func UpdateUserSessionExpiry(skey string, secs int) {
 	hkey := getUserCacheKey(skey)
 	if val, ok := userSessions.Get(hkey); ok {
@@ -139,7 +147,7 @@ func UpdateUserSessionExpiry(skey string, secs int) {
 	}
 }
 
-//SetSessionErrorFlag ser session errflg
+// SetSessionErrorFlag ser session errflg
 func SetSessionErrorFlag(skey string) {
 	hkey := getUserCacheKey(skey)
 	if val, ok := userSessions.Get(hkey); ok {
@@ -150,7 +158,7 @@ func SetSessionErrorFlag(skey string) {
 	}
 }
 
-//getUserCacheKey get cache key
+// getUserCacheKey get cache key
 func getUserCacheKey(skey string) (key uint64) {
 	hasher := _hashPool.Get().(hash.Hash64)
 	hasher.Reset()
