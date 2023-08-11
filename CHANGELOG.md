@@ -1,7 +1,10 @@
-## [](https://github.com/paralus/relay/compare/v0.1.4...v) (2023-05-24)
+## [0.1.5](https://github.com/paralus/relay/compare/v0.1.4...v0.1.5) (2023-08-11)
+
+### Bug Fixes
+
+* fix for readonly users should not access secrets ([#64](https://github.com/paralus/relay/issues/64)) ([a429d46](https://github.com/paralus/relay/commit/a429d4656261454da80b34f1bbc6a31812c6e92a))
 
 ### [0.1.4](https://github.com/paralus/relay/compare/v0.1.3...v0.1.4) (2023-03-31)
-
 
 ### Bug Fixes
 
