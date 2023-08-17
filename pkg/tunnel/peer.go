@@ -17,7 +17,7 @@ import (
 
 var peerlog *relaylogger.RelayLog
 
-//StartPeeringMgr will start the peering RPCs
+// StartPeeringMgr will start the peering RPCs
 func StartPeeringMgr(ctx context.Context, log *relaylogger.RelayLog, exitChan chan<- bool, config *ServerConfig) {
 	var tlsConfig *tls.Config
 	var err error

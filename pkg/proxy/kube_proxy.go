@@ -195,7 +195,7 @@ type unixHandlerOptions struct {
 	sni      string
 }
 
-//UnixKubeHandler unix handler
+// UnixKubeHandler unix handler
 func UnixKubeHandler(sockPath, key, username, sni string) (http.Handler, error) {
 
 	hkey := getRTCacheKey(username + key)
@@ -242,7 +242,7 @@ func peerDialContext(relayIP string) func(ctx context.Context, network, addr str
 	}
 }
 
-//makePeerUpgradeTransport ...
+// makePeerUpgradeTransport ...
 func makePeerUpgradeTransport(relayIP string, tlscfg *tls.Config) (k8proxy.UpgradeRequestRoundTripper, error) {
 	rt := utilnet.SetOldTransportDefaults(&http.Transport{
 		DialContext:         peerDialContext(relayIP),
@@ -263,7 +263,7 @@ func makePeerUpgradeTransport(relayIP string, tlscfg *tls.Config) (k8proxy.Upgra
 	return k8proxy.NewUpgradeRequestRoundTripper(rt, upgrader), nil
 }
 
-//PeerKubeHandler peer proxying handler
+// PeerKubeHandler peer proxying handler
 func PeerKubeHandler(tlscfg *tls.Config, relayIP string) (http.Handler, error) {
 	hkey := getRTCacheKey(tlscfg.ServerName)
 	if val, ok := relayPeerRoundTripper.Get(hkey); ok {

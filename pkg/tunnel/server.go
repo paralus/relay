@@ -72,7 +72,7 @@ type Server struct {
 	auditPath string
 }
 
-//RelayConn connection info
+// RelayConn connection info
 type RelayConn struct {
 	// Conn is the network connection
 	Conn net.Conn
@@ -97,7 +97,7 @@ type RelayConn struct {
 	dialinCachedKey string
 }
 
-//ServerListen defines a listen object
+// ServerListen defines a listen object
 type ServerListen struct {
 	// Addr specifies the listen address
 	Addr string
@@ -342,7 +342,7 @@ func (srv *Server) connectRequest(key string, msg *utils.ControlMessage, r io.Re
 	return req, nil
 }
 
-//dialinLookup check for cluster connection
+// dialinLookup check for cluster connection
 func dialinCountLookup(sni string) int {
 	for _, dsrv := range Servers {
 		if dsrv.Type == utils.DIALIN {
@@ -356,7 +356,7 @@ func dialinCountLookup(sni string) int {
 	return 0
 }
 
-//ProcessPeerForwards ...
+// ProcessPeerForwards ...
 func (srv *Server) ProcessPeerForwards(w http.ResponseWriter, r *http.Request, lg *relaylogger.RelayLog, relayIP string, certIssue int64) {
 
 	lg.Debug("ProcessPeerForwards:", relayIP, r.TLS.ServerName)
@@ -452,7 +452,7 @@ processCDPeerForwardDone:
 	return
 }
 
-//ProcessRelayRequest process user-facing request
+// ProcessRelayRequest process user-facing request
 func (srv *Server) ProcessRelayRequest(w http.ResponseWriter, r *http.Request, lg *relaylogger.RelayLog) {
 	var (
 		paralusUserName   string
@@ -828,7 +828,7 @@ func jsonError(w http.ResponseWriter, message, reason string, code int) {
 	fmt.Fprintln(w, message+" "+reason)
 }
 
-//ServeHTTP requests from userfacing connection
+// ServeHTTP requests from userfacing connection
 func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	servelog := slog.WithName("RelayServeHTTP")
 	servelog.Debug(
@@ -869,7 +869,7 @@ func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//AddToDialinPool add connection to dialin pool of the server
+// AddToDialinPool add connection to dialin pool of the server
 func (srv *Server) AddToDialinPool(rconn *RelayConn, remoteAddr string) (string, error) {
 	slog.Info(
 		"AddToDialinPool",
@@ -912,9 +912,9 @@ func getSNIMuxDebugString(tmp []byte) string {
 	return dstr
 }
 
-//StartHTTPSListen start TLS listen on address
-//Both user & dialin endpoint listen on 443
-//Based on SNI traffic is routed/muxed to appropriate handler
+// StartHTTPSListen start TLS listen on address
+// Both user & dialin endpoint listen on 443
+// Based on SNI traffic is routed/muxed to appropriate handler
 func (sl *ServerListen) StartHTTPSListen(ctx context.Context) {
 	slistenlog := slog.WithName("Listener")
 	slistenlog.Info(
@@ -1233,8 +1233,8 @@ proxyCDDilainConnectionDone:
 	time.Sleep(2 * time.Second)
 }
 
-//start the unix socket that listens for connections to
-//stich to a dialin. User request are handled here
+// start the unix socket that listens for connections to
+// stich to a dialin. User request are handled here
 func (srv *Server) startUnixListen(ctx context.Context, lg *relaylogger.RelayLog) {
 	//start listen the dialin unix pipe
 	socketpath := utils.UNIXSOCKET + srv.ServerName
@@ -1291,7 +1291,7 @@ func (srv *Server) startUnixListen(ctx context.Context, lg *relaylogger.RelayLog
 	}
 }
 
-//sni based muxing (virtual hosting) handler that get called based on SNI
+// sni based muxing (virtual hosting) handler that get called based on SNI
 func (srv *Server) sniListen(ctx context.Context, sni string, l net.Listener, sl *ServerListen) {
 	var tlsconfig *tls.Config
 	var err error
@@ -2039,7 +2039,7 @@ func deleteConnections(key string) {
 	delete(connections, key)
 }
 
-//DialinMetric for cluster connection
+// DialinMetric for cluster connection
 func DialinMetric(w http.ResponseWriter) {
 	for _, dsrv := range Servers {
 		if dsrv.Type == utils.DIALIN {
