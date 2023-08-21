@@ -44,6 +44,7 @@ type AuditMsg struct {
 	UserName       string  `json:"un"`
 	OrganizationID string  `json:"o"`
 	PartnerID      string  `json:"p"`
+	ProjectName    string  `json:"pr"`
 	RemoteAddr     string  `json:"ra"`
 	Duration       float64 `json:"d"`
 	ClusterName    string  `json:"cn"`

@@ -184,9 +184,12 @@ func (t *transformer) Transform(lm *LogMsg, am *AuditMsg) error {
 		return err
 	}
 
+	_log.Infow("cluster info for logging", "cluster", cluster)
+
 	params := t.getParams(lm.URL)
 
 	am.ClusterName = cluster.Name
+	am.ProjectName = cluster.Project
 	am.OrganizationID = user.OrganizationID
 	am.PartnerID = user.PartnerID
 	am.UserName = user.UserName
