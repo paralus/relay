@@ -24,7 +24,7 @@ var (
 	emptyID         [32]byte
 )
 
-//ServerTLSConfigFromBytes prepare a tls config from cert,key,rootCA
+// ServerTLSConfigFromBytes prepare a tls config from cert,key,rootCA
 func ServerTLSConfigFromBytes(certList []utils.SNICertificate, rootCAs []string, nextprotos ...string) (*tls.Config, error) {
 	var err error
 
@@ -76,7 +76,7 @@ func ServerTLSConfigFromBytes(certList []utils.SNICertificate, rootCAs []string,
 	return config, nil
 }
 
-//ClientTLSConfigFromBytes sets tls config
+// ClientTLSConfigFromBytes sets tls config
 func ClientTLSConfigFromBytes(tlsCrt []byte, tlsKey []byte, rootPEM []byte, addr string) (*tls.Config, error) {
 	cert, err := tls.X509KeyPair(tlsCrt, tlsKey)
 	if err != nil {
@@ -110,7 +110,7 @@ func ClientTLSConfigFromBytes(tlsCrt []byte, tlsKey []byte, rootPEM []byte, addr
 	}, nil
 }
 
-//ClientTLSConfig sets tls config
+// ClientTLSConfig sets tls config
 func ClientTLSConfig(tlsCrt string, tlsKey string, rootCA string, addr string) (*tls.Config, error) {
 
 	cert, err := tls.LoadX509KeyPair(tlsCrt, tlsKey)
@@ -149,7 +149,7 @@ func ClientTLSConfig(tlsCrt string, tlsKey string, rootCA string, addr string) (
 	}, nil
 }
 
-//GetRemoteCertID extract peer ID
+// GetRemoteCertID extract peer ID
 func GetRemoteCertID(conn *tls.Conn) (string, error) {
 	// Try a TLS connection over the given connection. We explicitly perform
 	// the handshake, since we want to maintain the invariant that, if this

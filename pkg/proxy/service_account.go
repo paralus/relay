@@ -125,7 +125,7 @@ func getServiceAccountSecret(ctx context.Context, c k8sclient.Client, name, name
 	return nil, fmt.Errorf("service account %s/%s does not have secrets of type ServiceAccountToken", namespace, name)
 }
 
-//DeleteServiceAccount from cluster and cache
+// DeleteServiceAccount from cluster and cache
 func DeleteServiceAccount(key, paralusAuthzSA, paralusAuthzRole, paralusAuthzRoleBind string, delCache bool) {
 	svclogger.Debug(
 		"DeleteServiceAccount",
