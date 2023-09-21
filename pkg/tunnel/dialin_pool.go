@@ -50,7 +50,7 @@ func (p *dialinPool) URL(key string) string {
 	return fmt.Sprint("https://", key)
 }
 
-//GetClientConn get connector
+// GetClientConn get connector
 func (p *dialinPool) GetClientConn(req *http.Request, addr string) (*http2.ClientConn, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
@@ -156,7 +156,7 @@ func (p *dialinPool) AddConn(conn net.Conn, identifier string, sni string, remot
 	return key, nil
 }
 
-//GetDialinConnectorKey get connector key
+// GetDialinConnectorKey get connector key
 func (p *dialinPool) GetDialinConnectorCount(sni string) (int, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
@@ -189,7 +189,7 @@ func (p *dialinPool) getConnKey(sni string, item *dialinConnector, count int) (s
 	return "", fmt.Errorf("Empty dialin pool.dialinConnectors for sni %s ", sni)
 }
 
-//GetDialinConnectorKey get connector key
+// GetDialinConnectorKey get connector key
 func (p *dialinPool) GetDialinConnectorKey(sni string) (string, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -335,7 +335,7 @@ func (p *dialinPool) addr(identifier string) string {
 	return identifier
 }
 
-//StartDialinPoolMgr starting dialin connection manager
+// StartDialinPoolMgr starting dialin connection manager
 func StartDialinPoolMgr(ctx context.Context, log *relaylogger.RelayLog, exitChan chan<- bool) {
 	_dplog = log.WithName("DialinPool")
 
@@ -351,7 +351,7 @@ func StartDialinPoolMgr(ctx context.Context, log *relaylogger.RelayLog, exitChan
 	}
 }
 
-//GetDialinMetrics get connector key
+// GetDialinMetrics get connector key
 func (p *dialinPool) GetDialinMetrics(w http.ResponseWriter) {
 	var clusterCnt, connCnt int
 	clusterCnt, connCnt = 0, 0

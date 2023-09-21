@@ -773,7 +773,7 @@ func cdRelayServerBootStrap(ctx context.Context, log *relaylogger.RelayLog) {
 	ticker.Stop()
 }
 
-//RunRelayServer entry to the relay server
+// RunRelayServer entry to the relay server
 func RunRelayServer(ctx context.Context, logLvl int) {
 	rctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -812,7 +812,7 @@ restartServer:
 	}
 }
 
-//RunCDRelayServer entry to the relay server
+// RunCDRelayServer entry to the relay server
 func RunCDRelayServer(ctx context.Context, logLvl int) {
 	rctx, cancel := context.WithCancel(ctx)
 	defer cancel()

@@ -171,7 +171,6 @@ func (t *transformer) getParams(url string) httprouter.Params {
 
 func (t *transformer) Transform(lm *LogMsg, am *AuditMsg) error {
 
-	//_log.Infow("transforming", "logMessage", *lm)
 	cluster, err := t.getCluster(lm.ServerName)
 	if err != nil {
 		_log.Infow("unable to lookup cluster", "error", err)
@@ -184,7 +183,7 @@ func (t *transformer) Transform(lm *LogMsg, am *AuditMsg) error {
 		return err
 	}
 
-	_log.Infow("cluster info for logging", "cluster", cluster)
+	_log.Debug("cluster info for logging", "cluster", cluster)
 
 	params := t.getParams(lm.URL)
 

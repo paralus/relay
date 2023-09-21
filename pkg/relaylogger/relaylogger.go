@@ -64,43 +64,43 @@ func (l *RelayLog) relaylog(level int, msg string, kvs ...interface{}) {
 
 }
 
-//Enabled log enabled
+// Enabled log enabled
 func (_ *RelayLog) Enabled() bool {
 	return true
 }
 
-//Critical log critical
+// Critical log critical
 func (l *RelayLog) Critical(msg string, kvs ...interface{}) {
 	l.relaylog(0, msg, kvs...)
 }
 
-//Error log error level
+// Error log error level
 func (l *RelayLog) Error(err error, msg string, kvs ...interface{}) {
 	kvs = append(kvs, "error", err)
 	l.relaylog(1, msg, kvs...)
 }
 
-//Warn log warning level
+// Warn log warning level
 func (l *RelayLog) Warn(msg string, kvs ...interface{}) {
 	l.relaylog(2, msg, kvs...)
 }
 
-//Info log info level
+// Info log info level
 func (l *RelayLog) Info(msg string, kvs ...interface{}) {
 	l.relaylog(3, msg, kvs...)
 }
 
-//Debug log debug level
+// Debug log debug level
 func (l *RelayLog) Debug(msg string, kvs ...interface{}) {
 	l.relaylog(4, msg, kvs...)
 }
 
-//V ..
+// V ..
 func (l *RelayLog) V(_ int) *RelayLog {
 	return l
 }
 
-//WithName set log name
+// WithName set log name
 func (l *RelayLog) WithName(name string) *RelayLog {
 	var objName string
 	if l.name == "" {
@@ -116,7 +116,7 @@ func (l *RelayLog) WithName(name string) *RelayLog {
 	}
 }
 
-//WithValues log  key values
+// WithValues log  key values
 func (l *RelayLog) WithValues(kvs ...interface{}) *RelayLog {
 	newMap := make(map[string]interface{}, len(l.keyValues)+len(kvs)/2)
 	for k, v := range l.keyValues {
@@ -132,7 +132,7 @@ func (l *RelayLog) WithValues(kvs ...interface{}) *RelayLog {
 	}
 }
 
-//NewLogger create new logger
+// NewLogger create new logger
 func NewLogger(level int) *RelayLog {
 	if runLevel < level {
 		runLevel = level
@@ -140,7 +140,7 @@ func NewLogger(level int) *RelayLog {
 	return &RelayLog{level: level}
 }
 
-//SetRunTimeLogLevel set a run time log level
+// SetRunTimeLogLevel set a run time log level
 func SetRunTimeLogLevel(level int) {
 	fmt.Println("log level changed from ", runLevel, " to ", level)
 	runLevel = level
