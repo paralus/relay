@@ -1,3 +1,14 @@
+## [0.1.6](https://github.com/paralus/relay/compare/v0.1.5...v0.1.6) (2023-09-25)
+
+### Added
+
+* changes to add project information with cluster lookup ([#225](https://github.com/paralus/paralus/issues/225)) ([e037e71](https://github.com/paralus/relay/commit/e037e718521dff8159cbef36ad2487127f549bb9))
+
+
+### Bug Fixes
+
+* use make check to clean up code formatting problems ([#78](https://github.com/paralus/relay/issues/78)) ([3c488bb](https://github.com/paralus/relay/commit/3c488bb8acf2e159ab536d838158150cd7e612ea))
+
 ## [0.1.5](https://github.com/paralus/relay/compare/v0.1.4...v0.1.5) (2023-08-11)
 
 ### Bug Fixes
@@ -30,7 +41,9 @@
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/paralus/relay/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/paralus/relay/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/paralus/relay/compare/v0.1.5...v0.1.6
+[0.1.5]: https://github.com/paralus/relay/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/paralus/relay/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/paralus/relay/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/paralus/relay/compare/v0.1.1...v0.1.2
