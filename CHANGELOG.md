@@ -1,6 +1,6 @@
 ## [0.1.6](https://github.com/paralus/relay/compare/v0.1.5...v0.1.6) (2023-09-25)
 
-### Added
+### Features
 
 * changes to add project information with cluster lookup ([#225](https://github.com/paralus/paralus/issues/225)) ([e037e71](https://github.com/paralus/relay/commit/e037e718521dff8159cbef36ad2487127f549bb9))
 
