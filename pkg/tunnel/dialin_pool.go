@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	commonv3 "github.com/paralus/paralus/proto/types/commonpb/v3"
 	"github.com/paralus/relay/pkg/relaylogger"
 	"github.com/paralus/relay/pkg/utils"
 	"golang.org/x/net/http2"
@@ -85,6 +86,7 @@ func (p *dialinPool) MarkDead(c *http2.ClientConn) {
 				if !p.deleteDialinConnectorKey(sni, addr) {
 					_dplog.Error(nil, "error in dialin MarkDead connector key delete did not find key ", addr)
 				}
+				go syncClusterHeath(sni, commonv3.ParalusConditionStatus_Unhealthy, "connection to target cluster lost..")
 			}
 			return
 		}
@@ -147,6 +149,8 @@ func (p *dialinPool) AddConn(conn net.Conn, identifier string, sni string, remot
 		p.dialinConnectors[sni].connKeys = append(p.dialinConnectors[sni].connKeys, addr)
 		sort.Strings(p.dialinConnectors[sni].connKeys)
 	}
+
+	go syncClusterHeath(key, commonv3.ParalusConditionStatus_Healthy, "successful dialin connection established with agent")
 
 	_dplog.Info(
 		"Added dialin connection",
@@ -272,6 +276,8 @@ func (p *dialinPool) DeleteConn(identifier string, sni string, remoteAddr string
 			"pool", p,
 		)
 	}
+
+	go syncClusterHeath(key, commonv3.ParalusConditionStatus_Unhealthy, "connection to target cluster lost..")
 
 	if p.deleteDialinConnectorKey(sni, addr) {
 		return
