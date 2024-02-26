@@ -17,16 +17,19 @@ func syncClusterHeath(sni string, status commonv3.ParalusConditionStatus, reason
 	id, err := getClusterID(sni)
 	if err != nil {
 		_log.Error("unable to get clusterID", "error", err)
+		return
 	}
 
 	u, err := url.Parse(utils.PeerServiceURI)
 	if err != nil {
 		_log.Error("unable to parse peer service url", "error", err)
+		return
 	}
 	//Load certificates
 	tlsConfig, err := ClientTLSConfigFromBytes(utils.PeerCertificate, utils.PeerPrivateKey, utils.PeerCACertificate, u.Host)
 	if err != nil {
 		_log.Error("unable to build tls config for peer service", "error", err)
+		return
 	}
 	transportCreds := credentials.NewTLS(tlsConfig)
 	peerSeviceHost := u.Host
@@ -35,6 +38,7 @@ func syncClusterHeath(sni string, status commonv3.ParalusConditionStatus, reason
 	conn, err := grpc.NewSecureClientConn(ctx, peerSeviceHost, transportCreds)
 	if err != nil {
 		_log.Error("unable to connect to core", "error", err)
+		return
 	}
 	defer conn.Close()
 
@@ -57,6 +61,7 @@ func syncClusterHeath(sni string, status commonv3.ParalusConditionStatus, reason
 	})
 	if err != nil {
 		_log.Error("failed to update cluster status", "error", err)
+		return
 	}
 	_log.Debug("successfully update cluster ", sni, " status ", status)
 }
