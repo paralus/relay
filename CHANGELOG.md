@@ -1,3 +1,9 @@
+## [0.1.7](https://github.com/paralus/relay/compare/v0.1.6...v0.1.7) (2024-02-28)
+
+### Features
+
+* update cluster health based on the dialin connection ([#108](https://github.com/paralus/relay/issues/108)) ([47e3f14](https://github.com/paralus/relay/commit/47e3f141d07109942756960069891c207bc2d52e))
+
 ## [0.1.6](https://github.com/paralus/relay/compare/v0.1.5...v0.1.6) (2023-09-25)
 
 ### Features
@@ -41,7 +47,8 @@
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/paralus/relay/compare/v0.1.6...HEAD
+[Unreleased]: https://github.com/paralus/relay/compare/v0.1.7...HEAD
+[0.1.7]: https://github.com/paralus/relay/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/paralus/relay/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/paralus/relay/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/paralus/relay/compare/v0.1.3...v0.1.4
