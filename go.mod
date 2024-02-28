@@ -12,7 +12,7 @@ require (
 	github.com/inconshreveable/go-vhost v0.0.0-20160627193104-06d84117953b
 	github.com/jinzhu/inflection v1.0.0
 	github.com/julienschmidt/httprouter v1.3.0
-	github.com/paralus/paralus v0.2.5-0.20230921060456-1b7a9a1fa32e
+	github.com/paralus/paralus v0.2.7-0.20240212135918-669e222441b2
 	github.com/rs/xid v1.3.0
 	github.com/segmentio/encoding v0.3.4
 	github.com/spf13/pflag v1.0.5
@@ -22,6 +22,7 @@ require (
 	golang.org/x/net v0.17.0
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac
 	google.golang.org/grpc v1.56.3
+	google.golang.org/protobuf v1.30.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	k8s.io/api v0.23.4
 	k8s.io/apimachinery v0.23.4
@@ -110,7 +111,6 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.2.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
-	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
