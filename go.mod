@@ -1,6 +1,6 @@
 module github.com/paralus/relay
 
-go 1.20
+go 1.21
 
 require (
 	github.com/cenkalti/backoff v2.2.1+incompatible
