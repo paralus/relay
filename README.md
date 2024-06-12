@@ -1,4 +1,6 @@
 # Paralus relay-server / relay-agent
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fparalus%2Frelay.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fparalus%2Frelay?ref=badge_shield)
+
 
 Relay server and agent for kubectl access.
 
@@ -132,3 +134,7 @@ The easiest way to start is to look at existing issues and see if there’s some
 Once you decide on an issue, please comment on it so that all of us know that you’re on it.
 
 If you’re looking to add a new feature, raise a [new issue](https://github.com/paralus/relay/issues) and start a discussion with the community. Engage with the maintainers of the project and work your way through.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fparalus%2Frelay.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fparalus%2Frelay?ref=badge_large)
