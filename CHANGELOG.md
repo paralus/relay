@@ -1,3 +1,9 @@
+## [0.1.8](https://github.com/paralus/relay/compare/v0.1.7...v0.1.8) (2024-06-14)
+
+### Added
+- updated go version to fix reported vulnerabilities ([91e0dae](https://github.com/paralus/relay/commit/91e0daea955ba8b4a73e3e99e68b0b92c7cef799))
+- upgraded xnet library version to v0.23 to fix vulnerabilities ([75b6977](https://github.com/paralus/relay/commit/75b6977ea9dcbfa3df02b3afc6ca285f679f4c29))
+
 ## [0.1.7](https://github.com/paralus/relay/compare/v0.1.6...v0.1.7) (2024-02-28)
 
 ### Features
