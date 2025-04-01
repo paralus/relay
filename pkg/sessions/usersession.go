@@ -89,6 +89,9 @@ func InitUserSessionCache() error {
 	roleCheck.Handle("GET", "/api/:version/namespaces/:namespace/secrets/*name", _dummyHandler)
 	roleCheck.Handle("GET", "/api/:version/secrets/*name", _dummyHandler)
 
+	roleCheck.Handle("POST", "/api/:version/namespaces/:namespace/pods/:pod/portforward", _dummyHandler)
+	roleCheck.Handle("GET", "/api/:version/namespaces/:namespace/pods/:pod/portforward", _dummyHandler)
+
 	roleCheckSecret = httprouter.New()
 	roleCheckSecret.Handle("POST", "/api/:version/namespaces/:namespace/secrets", _dummyHandler)
 	roleCheckSecret.Handle("GET", "/api/:version/namespaces/:namespace/secrets", _dummyHandler)
