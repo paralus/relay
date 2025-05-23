@@ -1,3 +1,8 @@
+## [0.1.9](https://github.com/paralus/relay/compare/v0.1.8...v0.1.9) (2025-05-23)
+
+### Added
+- restricted the port-forwording for read-only user ([1053483](https://github.com/paralus/relay/commit/1053483867883b10a0f4c47a4d4bfea12e7e109f))
+
 ## [0.1.8](https://github.com/paralus/relay/compare/v0.1.7...v0.1.8) (2024-06-14)
 
 ### Added
