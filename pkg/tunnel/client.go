@@ -249,6 +249,13 @@ func (c *Client) Start(ctx context.Context) error {
 			continue
 		}
 
+		// Start heartbeat to prevent connection resets
+		heartbeatCtx, heartbeatCancel := context.WithCancel(ctx)
+		go func() {
+			defer heartbeatCancel()
+			utils.StartHeartbeat(heartbeatCtx, conn, c.logger)
+		}()
+
 		go func() {
 			//handles the http/2 tunnel
 			c.httpServer.ServeConn(conn, &http2.ServeConnOpts{

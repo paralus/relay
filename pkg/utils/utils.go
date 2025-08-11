@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"context"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
@@ -151,21 +152,29 @@ var (
 	// next read/write before closing connection.
 	IdleTimeout = 5 * time.Minute
 	// DefaultTimeout specifies a general purpose timeout.
+	// Set to 5 minutes to stay under AWS NLB's 350-second hardcoded timeout
 	DefaultTimeout = 5 * time.Minute
 	// DefaultPingTimeout specifies a ping timeout.
 	DefaultPingTimeout = 5 * time.Second
 
 	// DefaultKeepAliveIdleTime specifies how long connection can be idle
 	// before sending keepalive message.
-	DefaultKeepAliveIdleTime = 15 * time.Second
+	DefaultKeepAliveIdleTime = 30 * time.Second
 
 	// DefaultKeepAliveCount specifies maximal number of keepalive messages
 	// sent before marking connection as dead.
-	DefaultKeepAliveCount = 3
+	DefaultKeepAliveCount = 5
 
 	// DefaultKeepAliveInterval specifies how often retry sending keepalive
 	// messages when no response is received.
-	DefaultKeepAliveInterval = 5 * time.Second
+	DefaultKeepAliveInterval = 10 * time.Second
+
+	// DefaultHeartbeatInterval specifies how often to send heartbeat pulses
+	// Set to 4 minutes to stay well under AWS NLB's 350-second (5m50s) hardcoded timeout
+	DefaultHeartbeatInterval = 4 * time.Minute
+
+	// HeartbeatMessage is the message sent as a heartbeat pulse
+	HeartbeatMessage = []byte("HEARTBEAT_PULSE")
 
 	//DefaultMuxTimeout specifies vmux timeout
 	DefaultMuxTimeout = 10 * time.Second
@@ -288,6 +297,80 @@ var (
 	// Fingerprint uuid of the agent namespace which acts as relay agent fingerprint
 	Fingerprint string
 )
+
+func init() {
+	// Allow environment variable overrides for timeout and keep-alive settings
+	if timeoutStr := os.Getenv("RELAY_DEFAULT_TIMEOUT"); timeoutStr != "" {
+		if timeout, err := time.ParseDuration(timeoutStr); err == nil {
+			DefaultTimeout = timeout
+		}
+	}
+
+	if idleTimeStr := os.Getenv("RELAY_KEEPALIVE_IDLE_TIME"); idleTimeStr != "" {
+		if idleTime, err := time.ParseDuration(idleTimeStr); err == nil {
+			DefaultKeepAliveIdleTime = idleTime
+		}
+	}
+
+	if countStr := os.Getenv("RELAY_KEEPALIVE_COUNT"); countStr != "" {
+		if count, err := strconv.Atoi(countStr); err == nil && count > 0 {
+			DefaultKeepAliveCount = count
+		}
+	}
+
+	if intervalStr := os.Getenv("RELAY_KEEPALIVE_INTERVAL"); intervalStr != "" {
+		if interval, err := time.ParseDuration(intervalStr); err == nil {
+			DefaultKeepAliveInterval = interval
+		}
+	}
+
+	if heartbeatStr := os.Getenv("RELAY_HEARTBEAT_INTERVAL"); heartbeatStr != "" {
+		if heartbeat, err := time.ParseDuration(heartbeatStr); err == nil {
+			DefaultHeartbeatInterval = heartbeat
+		}
+	}
+}
+
+// StartHeartbeat starts a goroutine that sends periodic heartbeat pulses to keep connections alive
+// Note: AWS NLB has a hardcoded 350-second (5m50s) idle timeout in TCP mode, so heartbeat
+// interval must be less than this to prevent connection resets
+func StartHeartbeat(ctx context.Context, conn net.Conn, logger *relaylogger.RelayLog) {
+	go func() {
+		ticker := time.NewTicker(DefaultHeartbeatInterval)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ctx.Done():
+				logger.Debug("heartbeat stopped", "reason", "context cancelled")
+				return
+			case <-ticker.C:
+				// Send heartbeat pulse
+				if err := sendHeartbeatPulse(conn); err != nil {
+					logger.Error(err, "failed to send heartbeat pulse")
+					return
+				}
+				logger.Debug("heartbeat pulse sent")
+			}
+		}
+	}()
+}
+
+// sendHeartbeatPulse sends a heartbeat pulse to keep the connection alive
+func sendHeartbeatPulse(conn net.Conn) error {
+	// Set a short deadline for the heartbeat write
+	conn.SetWriteDeadline(time.Now().Add(5 * time.Second))
+
+	// Send heartbeat message
+	_, err := conn.Write(HeartbeatMessage)
+	if err != nil {
+		return fmt.Errorf("failed to write heartbeat: %w", err)
+	}
+
+	// Reset write deadline
+	conn.SetWriteDeadline(time.Time{})
+	return nil
+}
 
 // CountWriter to measure bytes
 type CountWriter struct {

@@ -1759,6 +1759,11 @@ func (srv *Server) handleCDRelayConnection(ctx context.Context, conn net.Conn, t
 		return
 	}
 
+	// Start heartbeat to prevent connection resets
+	heartbeatCtx, heartbeatCancel := context.WithCancel(ctx)
+	defer heartbeatCancel()
+	utils.StartHeartbeat(heartbeatCtx, conn, hlog)
+
 	// prcess the TLS layer
 	_, err := srv.processCDRelayTLSState(ctx, tls.Server(conn, tlsconfig), hlog, tlsconfig)
 	if err != nil {
@@ -1789,6 +1794,11 @@ func (srv *Server) handleDialinConnection(conn net.Conn, tlsconfig *tls.Config) 
 		conn.Close()
 		return
 	}
+
+	// Start heartbeat to prevent connection resets
+	heartbeatCtx, heartbeatCancel := context.WithCancel(context.Background())
+	defer heartbeatCancel()
+	utils.StartHeartbeat(heartbeatCtx, conn, hlog)
 
 	// prcess the TLS layer
 	_, err := srv.processDialinTLSState(tls.Server(conn, tlsconfig), hlog, tlsconfig)
