@@ -38,25 +38,25 @@ type LogMsg struct {
 
 // AuditMsg represents audit message
 type AuditMsg struct {
-	Timestamp      string  `json:"ts"`
+	Timestamp      string  `json:"timestamp"`
 	XID            xid.ID  `json:"id"`
-	StatusCode     int     `json:"sc"`
-	UserName       string  `json:"un"`
-	OrganizationID string  `json:"o"`
-	PartnerID      string  `json:"p"`
-	ProjectName    string  `json:"pr"`
-	RemoteAddr     string  `json:"ra"`
-	Duration       float64 `json:"d"`
-	ClusterName    string  `json:"cn"`
-	APIVersion     string  `json:"av"`
-	Kind           string  `json:"k"`
-	Namespace      string  `json:"ns"`
-	Name           string  `json:"n"`
-	Method         string  `json:"m"`
+	StatusCode     int     `json:"status_code"`
+	UserName       string  `json:"username"`
+	OrganizationID string  `json:"organization_id"`
+	PartnerID      string  `json:"partner_id"`
+	ProjectName    string  `json:"project"`
+	RemoteAddr     string  `json:"remote_addr"`
+	Duration       float64 `json:"duration"`
+	ClusterName    string  `json:"cluster_name"`
+	APIVersion     string  `json:"api_version"`
+	Kind           string  `json:"kind"`
+	Namespace      string  `json:"namespace"`
+	Name           string  `json:"name"`
+	Method         string  `json:"method"`
 	URL            string  `json:"url"`
-	Query          string  `json:"q"`
-	Written        int64   `json:"w"`
-	SessionType    string  `json:"st"`
+	Query          string  `json:"query"`
+	Written        int64   `json:"written"`
+	SessionType    string  `json:"session_type"`
 }
 
 // Reset resets audit message
